@@ -2,23 +2,24 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface Category {
-  id: string;
+  _id: string;
   name: string;
   imageUrl: string;
-} 
+}
 
 interface CategorySelected extends Category {
-    setSelectedCategory: (category: Category) => void;
+  setSelectedCategory: (category: Category) => void;
+  getSelectedCategory: () => CategorySelected;
   reset: () => void;
 }
 
-
-const initialCategorySelectedState:CategorySelected = {
-  id:"",
-  imageUrl:"",
-  name:"",
-  setSelectedCategory: () => { },
-  reset: () => { }
+const initialCategorySelectedState: CategorySelected = {
+  _id: '',
+  imageUrl: '',
+  name: '',
+  setSelectedCategory: () => {},
+  getSelectedCategory: () => initialCategorySelectedState,
+  reset: () => {},
 };
 
 // Crear la tienda persistente
@@ -27,11 +28,11 @@ const useSelectedCategory = create<CategorySelected>()(
     (set) => ({
       ...initialCategorySelectedState,
       setSelectedCategory: (category: Category) => {
-        set( category );
+        set(category);
         // Guardar en localStorage con persistencia automática
         localStorage.setItem('SelectedCategory', JSON.stringify(category));
       },
-      getSelectedCategory: () => { 
+      getSelectedCategory: () => {
         const storedCategory = localStorage.getItem('SelectedCategory');
         return storedCategory ? JSON.parse(storedCategory) : null;
       },

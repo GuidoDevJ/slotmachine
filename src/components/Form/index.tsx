@@ -8,6 +8,10 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 
+interface Props {
+  setIsloading:(bolean:boolean)=>void
+}
+
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -18,13 +22,14 @@ const validationSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
-const LoginForm = () => {
+const LoginForm = ({setIsloading}:Props) => {
   const login = useAuthStore((state) => state.login); // Obtiene la función login de Zustand
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const navigate = useRouter();
   const mutation = useMutation({
     mutationFn: Login,
     onSuccess: async (data) => {
+      setIsloading(false)
       const { token } = data;
       login(token); 
       navigate.push('/config');
@@ -36,6 +41,7 @@ const LoginForm = () => {
 
   const handlerLogin = (values: any) => {
     mutation.mutate(values);
+    setIsloading(true)
   };
   return (
     <Formik
@@ -46,7 +52,7 @@ const LoginForm = () => {
       }}
     >
       {({ isSubmitting, errors, touched }) => (
-        <Form className="max-w-xl">
+        <Form className="w-[50vw] max-w-[600px]">
           <div className="w-full mb-5">
             <label
               htmlFor="email"
@@ -63,7 +69,7 @@ const LoginForm = () => {
               name="email"
               id="email"
               placeholder="guido@xxx.com"
-              className={`block w-[50vw] xl:w-[40vw] p-2.5 text-sm rounded-lg focus:ring ${
+              className={`block w-full p-2.5 text-sm rounded-lg focus:ring ${
                 errors.email && touched.email
                   ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:border-red-500 dark:bg-gray-700 dark:border-red-500 dark:text-red-500 dark:placeholder-red-500'
                   : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:border-green-500 dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
@@ -96,7 +102,7 @@ const LoginForm = () => {
               name="password"
               id="password"
               placeholder="*********"
-              className={`block  w-[50vw] xl:w-[40vw] p-2.5 text-sm rounded-lg focus:ring ${
+              className={`block  w-full p-2.5 text-sm rounded-lg focus:ring ${
                 errors.password && touched.password
                   ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:border-red-500 dark:bg-gray-700 dark:border-red-500 dark:text-red-500 dark:placeholder-red-500'
                   : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:border-green-500 dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
@@ -114,7 +120,6 @@ const LoginForm = () => {
             )}
           </div>
 
-          {mutation.isPending ? <MainSpinner /> : null}
           <div className="w-full flex justify-center items-center">
             <Button color="primary" size="small" type='submit'>
               Ingresar

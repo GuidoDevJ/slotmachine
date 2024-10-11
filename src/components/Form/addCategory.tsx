@@ -14,22 +14,28 @@ const validationSchema = Yup.object().shape({
     .required('El nombre del producto es requerido'),
   imageUrl: Yup.string().url('Debe ser una URL válida').required('La imagen es requerida'),
 });
+interface Props {
+  setShowPopUp?: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const AddCategoryForm = () => {
+const AddCategoryForm = ({setShowPopUp}:Props) => {
   const navigate = useRouter();
   const [file, setFile] = useState<string | null>(null); // Tipo ajustado a string o null
   const mutation = useMutation({
     mutationFn: AddCategory,
     onSuccess: async (data) => {
-      navigate.push('/categories');
+      setShowPopUp?.(true)
+      setTimeout(()=>{
+        setShowPopUp?.(false)
+        navigate.push('/categories');
+      },2000)
     },
     onSettled: async () => {
       console.log("I'm second!");
     },
   });
 
-  const handlerAddProduct =(data:any)=>{
-    console.log("Soy la data ==>>", data)
+  const handlerAddCategory =(data:any)=>{
     mutation.mutate(data)
   }
 
@@ -46,11 +52,11 @@ const AddCategoryForm = () => {
         // Aquí puedes enviar formData a tu backend o manejarlo según tus necesidades
         setTimeout(() => {
           alert(JSON.stringify(formData, null, 2));
-          const addProductJson = {
+          const addItem = {
             name: values.name,
             imageURL: values.imageUrl,
           }
-          handlerAddProduct(addProductJson)
+          handlerAddCategory(addItem)
           setSubmitting(false);
         }, 400);
       }}

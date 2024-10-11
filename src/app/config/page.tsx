@@ -4,6 +4,8 @@ import DropItem from '@/components/DropDown/DropItem';
 import Header from '@/components/Header/Header';
 import ProtectedRoute from '@/components/ProtectedRoute/protectedRoute';
 import Button from '@/ui/Buttons/ButtonText';
+import { Category, getCategories } from '@/utils/requests';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const initialState = [
@@ -75,7 +77,11 @@ const ConfigPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('Cerveza');
   const [isOpen, setIsOpen] = useState<boolean>(false); // Tipar el estado correctamente
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-
+  // useQuery para obtener las categorías
+  const { data: categories = [], isLoading, isError } = useQuery<Category[]>({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+  });
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
@@ -108,13 +114,13 @@ const ConfigPage = () => {
               toggleDropdown={toggleDropdown}
               isOpen={isOpen}
             >
-              {cat.map((c) => (
+              {categories.map((c:Category) => (
                 <DropItem
                   resetProducts={() => {
                     setSelectedProducts([]);
                   }}
                   toggleDropdown={toggleDropdown}
-                  key={c.id}
+                  key={c._id}
                   text={c.name}
                   selectCat={setSelectedCategory}
                 />

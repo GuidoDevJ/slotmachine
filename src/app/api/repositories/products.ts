@@ -54,6 +54,16 @@ class ProductsRepository {
       throw new Error(`Error al actualizar la categoría: ${error}`);
     }
   }
+  async getAllByCategoryId(categoryId: string): Promise<IProducts[]> {
+    try {
+      const categories = await Products.find({
+        categoryId: categoryId,
+      });
+      return categories;
+    } catch (error) {
+      throw new Error(`Error al obtener las categorías: ${error}`);
+    }
+  }
 }
 
 export default new ProductsRepository();

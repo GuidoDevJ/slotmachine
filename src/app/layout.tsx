@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
         <ReactQueryProvider>
-          <main>{children}</main>
+          <main className='overflow-hidden'>{children}</main>
         </ReactQueryProvider>
       </body>
     </html>

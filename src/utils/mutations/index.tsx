@@ -6,7 +6,12 @@ interface TokenPayload {
   exp: number; // Expiración en segundos desde el epoch
   // Otros campos según tu JWT
 }
-
+interface Product {
+  name?: string;
+  description?: string;
+  imageURL?: string;
+  probability?:number
+}
 export const Login = async (userData: { email: string; password: string }) => {
   try {
     const response = await instance.post("/api/auth/login", userData);
@@ -81,6 +86,29 @@ export const AddCategory = async (productData:any) => {
     }
   }
 };
+export const PatchProduct = async(product:Product,id:string)=>{
+  console.log(product, id)  
+  try {
+    const response = await instance.patch(`/api/products/${id}`, product,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log("Respuesta del servidor:", response.data);
+    return response.data;
+  } catch (error: any) {
+    if (error) {
+      console.error("Error al agregar el producto", error.response?.data || error.message);
+      throw new Error(
+        error.response?.data?.message || "Error al agregar el producto"
+      );
+    } else {
+      throw new Error("Error inesperado.");
+    }
+  }
+}
 
 
 

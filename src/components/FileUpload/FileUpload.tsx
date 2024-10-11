@@ -36,7 +36,7 @@ const FileUpload = ({ setFile }: FileCustom) => {
     console.log('file ==>', file);
     const formData = new FormData();
     formData.append('file', file);
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imd1aWRvZ2F1bmE5QGdtYWlsLmNvbSIsImV4cCI6MTcyNjkzMTU4N30.ONA8gpiy2ixWOnSjmeJa94EUbyeiXXwm9EYsl5oDdsk"
+    const token = localStorage.getItem("token")
     console.log('formData ==>', formData);
     try {
       setUploading(true);

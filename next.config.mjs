@@ -5,6 +5,7 @@ const nextConfig = {
       'jumboargentina.vtexassets.com',
       'res.cloudinary.com',
       'www.capitandelespaciomr.com.ar',
+      'cdn.shopify.com',
     ], // Añade el dominio aquí
   },
 };

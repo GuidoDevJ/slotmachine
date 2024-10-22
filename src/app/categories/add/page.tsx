@@ -16,7 +16,6 @@ const AddCategory = () => {
           <AddCategoryForm setShowPopUp={setShowPopUp}/>
         </div>
       </div>
-
       {showPopUp ? (
         <div className="absolute top-16 right-0">
           <NewCategory

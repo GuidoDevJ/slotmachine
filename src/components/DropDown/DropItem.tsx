@@ -1,14 +1,19 @@
 interface DropItem {
   text: string;
-  selectCat: (text: string) => void;
+  selectCat: ({}:any) => void;
   toggleDropdown: () => void;
-  resetProducts : ()=>void
+  resetProducts : ()=>void;
+  id:string
 }
-const DropItem = ({ text,selectCat,toggleDropdown ,resetProducts}: DropItem) => {
+const DropItem = ({ text,selectCat,toggleDropdown ,resetProducts,id}: DropItem) => {
   return (
     <li onClick={(e:any)=>{
         toggleDropdown()
-        selectCat(e.target.innerHTML)
+        selectCat({
+          text,
+          id
+        } as any)
+        console.log({text,id})
         resetProducts()
     }}>
       <a

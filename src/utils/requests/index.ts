@@ -32,10 +32,12 @@ export const getCategories = async (): Promise<Category[]> => {
 export const getProductsCategories = async (
   categoryId: string
 ): Promise<any[]> => {
+  console.log('category==>', categoryId);
+  const token = localStorage.getItem('token');
   try {
     const res = await instance.get(`api/categories/${categoryId}`, {
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imd1aWRvZ2F1bmE5QGdtYWlsLmNvbSIsImV4cCI6MTcyODEzMTY1M30.4XCEK0feX_1HqozcCBHO8EKsX3znNdT04qBTYxgb2pU`,
+        Authorization: `Bearer ${token}`,
       },
     });
     // Verifica si la respuesta es válida (status code en el rango 2xx)
@@ -46,6 +48,7 @@ export const getProductsCategories = async (
     }
 
     const categories: IProducts[] = res.data; // No necesitas hacer res.data() en axios, solo res.data
+    console.log(categories);
     return categories;
   } catch (error) {
     console.error('Error al obtener las categorías:', error);

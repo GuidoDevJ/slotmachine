@@ -32,7 +32,6 @@ export const getCategories = async (): Promise<Category[]> => {
 export const getProductsCategories = async (
   categoryId: string
 ): Promise<any[]> => {
-  console.log('category==>', categoryId);
   const token = localStorage.getItem('token');
   try {
     const res = await instance.get(`api/categories/${categoryId}`, {
@@ -73,5 +72,30 @@ export const deleteProduct = async (productId: string) => {
     throw new Error(
       error.response?.data?.message || 'Error al eliminar el producto'
     );
+  }
+};
+
+export const getConfig = async (): Promise<Category[]> => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await instance.get('api/game', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // Verifica si la respuesta es válida (status code en el rango 2xx)
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error(
+        'Error al obtener las categorías, código de estado: ' + res.status
+      );
+    }
+
+    const config = res.data; // No necesitas hacer res.data() en axios, solo res.data
+    console.log(config);
+    return config;
+  } catch (error) {
+    console.error('Error al obtener las categorías:', error);
+    return [];
   }
 };

@@ -86,6 +86,30 @@ export const AddCategory = async (productData:any) => {
     }
   }
 };
+export const AddConfig = async (configGame:any) => {
+  try {
+    const response = await instance.post("/api/game", configGame,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log("Respuesta del servidor:", response.data);
+
+
+    return response.data;
+  } catch (error: any) {
+    if (error) {
+      console.error("Error al agregar la config", error.response?.data || error.message);
+      throw new Error(
+        error.response?.data?.message || "Error al agregar la config"
+      );
+    } else {
+      throw new Error("Error inesperado.");
+    }
+  }
+};
 export const PatchProduct = async(product:Product,id:string)=>{
   console.log(product, id)  
   try {

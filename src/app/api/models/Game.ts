@@ -6,6 +6,7 @@ export interface ICategoriesSelected {
 }
 
 export interface IGame extends Document {
+  categoryId: Schema.Types.ObjectId;
   lastUpdated: Date;
   categoriesSelected: ICategoriesSelected[];
 }
@@ -26,6 +27,7 @@ const categoriesSelectedSchema = new Schema<ICategoriesSelected>({
 });
 
 const gameSchema = new Schema<IGame>({
+  categoryId: Schema.Types.ObjectId,
   lastUpdated: {
     type: Date,
     default: Date.now, // Asigna la fecha actual automáticamente

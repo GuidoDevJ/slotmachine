@@ -10,6 +10,7 @@ interface ConfigContainerProps {
   both?: boolean;
   externalFn?: (value: any) => void;
   saveFn?: () => void;
+  showButtons?: boolean;
 }
 
 const ConfigContainer: React.FC<ConfigContainerProps> = ({
@@ -17,6 +18,7 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
   both = false,
   externalFn,
   saveFn,
+  showButtons = true,
 }) => {
   const intervalValue = 3; // Valor constante para el input
   const [edit, setEdit] = useState(false);
@@ -33,21 +35,41 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
                 size="small"
                 large="small"
                 aria-label="Guardar cambios"
-                onClick={()=>{
-                  saveFn && saveFn()
+                onClick={() => {
+                  saveFn && saveFn();
                   console.log('Guardado');
-                }
-                }
+                }}
               >
                 Guardar
               </Button>
             </div>
           </div>
         ) : null}
-
-        <div className="absolute top-0 right-0 m-4 cursor-pointer flex">
-          {both ? (
-            <>
+        {showButtons ? (
+          <div className="absolute top-0 right-0 m-4 cursor-pointer flex">
+            {both ? (
+              <>
+                <Image
+                  className=""
+                  src={Edit}
+                  alt="Edit"
+                  width={30}
+                  height={30}
+                  onClick={() => {
+                    setEdit(!edit);
+                    if (externalFn) externalFn(false);
+                    console.log('Edit');
+                  }}
+                />
+                <Image
+                  className=""
+                  src={Delete}
+                  alt="Edit"
+                  width={30}
+                  height={30}
+                />
+              </>
+            ) : (
               <Image
                 className=""
                 src={Edit}
@@ -56,33 +78,13 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
                 height={30}
                 onClick={() => {
                   setEdit(!edit);
-                  if (externalFn) externalFn(false);
+                  if (externalFn) externalFn(edit);
                   console.log('Edit');
                 }}
               />
-              <Image
-                className=""
-                src={Delete}
-                alt="Edit"
-                width={30}
-                height={30}
-              />
-            </>
-          ) : (
-            <Image
-              className=""
-              src={Edit}
-              alt="Edit"
-              width={30}
-              height={30}
-              onClick={() => {
-                setEdit(!edit);
-                if (externalFn) externalFn(edit);
-                console.log('Edit');
-              }}
-            />
-          )}
-        </div>
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );

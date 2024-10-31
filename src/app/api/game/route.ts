@@ -6,11 +6,11 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   await db.connect();
   let body = await request.json();
-
+  console.log(body);
   // Convertir los IDs a ObjectId
   const transformedCategories = body.categoriesSelected.map(
     (category: any) => ({
-      categoryId: new mongoose.Types.ObjectId(category.categoryId),
+      categoryId: category.categoryId,
       products: category.products.map(
         (productId: string) => new mongoose.Types.ObjectId(productId)
       ),
@@ -23,10 +23,9 @@ export async function POST(request: Request) {
   const lastUpdated = new Date(argentinaTime); // Convertir la fecha en objeto Date
   try {
     const newSetting = await GameRepository.createGameSettings({
-      ...body,
       categoriesSelected: transformedCategories,
       lastUpdated,
-    });
+    } as any);
     return NextResponse.json(newSetting, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ message: `${error.message}` }, { status: 500 });

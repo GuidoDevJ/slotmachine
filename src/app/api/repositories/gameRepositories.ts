@@ -105,6 +105,24 @@ class GameRepository {
       })
       .exec();
   }
+  async deleteGameConfig(id: string) {
+    const lastGame = await this.getLastGameConfig();
+
+    if (!lastGame) {
+      throw new Error('No se encontró el juego');
+    }
+
+    // Filtramos las categorías que no coinciden con el ID
+    lastGame.categoriesSelected = lastGame.categoriesSelected.filter(
+      (categorySelected: any) =>
+        categorySelected.categoryId._id.toString() !== id
+    );
+
+    // Guardamos los cambios actualizados en la base de datos
+    await lastGame.save();
+
+    return lastGame;
+  }
 }
 
 export default new GameRepository();

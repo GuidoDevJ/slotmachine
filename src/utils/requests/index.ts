@@ -74,6 +74,25 @@ export const deleteProduct = async (productId: string) => {
     );
   }
 };
+export const deleteCategory = async (categoryId: string) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await instance.delete(`/api/game/${categoryId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error al eliminar el producto',
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || 'Error al eliminar el producto'
+    );
+  }
+};
 
 export const getConfig = async (): Promise<Category[]> => {
   const token = localStorage.getItem('token');
@@ -93,6 +112,30 @@ export const getConfig = async (): Promise<Category[]> => {
 
     const config = res.data; // No necesitas hacer res.data() en axios, solo res.data
     console.log(config);
+    return config;
+  } catch (error) {
+    console.error('Error al obtener las categorías:', error);
+    return [];
+  }
+};
+
+export const getSpecificConfig = async (categoryId: string): Promise<any> => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await instance.get(`api/game/${categoryId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // Verifica si la respuesta es válida (status code en el rango 2xx)
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error(
+        'Error al obtener la categoria, código de estado: ' + res.status
+      );
+    }
+
+    const config = res.data; // No necesitas hacer res.data() en axios, solo res.data
     return config;
   } catch (error) {
     console.error('Error al obtener las categorías:', error);

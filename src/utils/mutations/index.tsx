@@ -133,6 +133,28 @@ export const PatchProduct = async(product:Product,id:string)=>{
     }
   }
 }
+export const PatchCategorySelected = async(products:string[],id:string)=>{
+  try {
+    const response = await instance.patch(`/api/game/${id}`, products,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    console.log("Respuesta del servidor:", response.data);
+    return response.data;
+  } catch (error: any) {
+    if (error) {
+      console.error("Error al agregar el producto", error.response?.data || error.message);
+      throw new Error(
+        error.response?.data?.message || "Error al agregar el producto"
+      );
+    } else {
+      throw new Error("Error inesperado.");
+    }
+  }
+}
 
 
 

@@ -57,10 +57,11 @@ class ProductsRepository {
   async getAllByCategoryId(categoryId: string): Promise<IProducts[]> {
     try {
       const categories = await Products.find({
-        categoryId: categoryId,
-      });
+        categoryId: new mongoose.Types.ObjectId(categoryId),
+      }).exec();
       return categories;
     } catch (error) {
+      console.log(error);
       throw new Error(`Error al obtener las categorías: ${error}`);
     }
   }

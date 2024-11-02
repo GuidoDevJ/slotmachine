@@ -103,6 +103,7 @@ class GameRepository {
       .populate({
         path: 'categoriesSelected.products', // Hacer populate del campo products
       })
+      .setOptions({ strictPopulate: false }) // Desactiva strictPopulate
       .exec();
   }
   async deleteGameConfig(id: string) {
@@ -122,6 +123,48 @@ class GameRepository {
     await lastGame.save();
 
     return lastGame;
+  }
+  async updateGameConfig(id: string, updateCategory: { products: any[] }) {
+    // Obtener el último juego de configuración
+    const lastGame = await this.getLastGameConfig();
+
+    if (!lastGame) {
+      throw new Error('No se encontró el juego');
+    }
+
+    // Buscar la categoría dentro de `categoriesSelected` que coincida con `categoryId._id`
+    const categoryToUpdate = lastGame.categoriesSelected.find(
+      (categorySelected: any) =>
+        categorySelected.categoryId._id.toString() === id
+    );
+
+    // Si se encuentra la categoría, actualizar sus productos
+    if (categoryToUpdate) {
+      categoryToUpdate.products = updateCategory.products;
+    } else {
+      throw new Error('No se encontró la categoría con el ID especificado');
+    }
+
+    // Guardamos los cambios actualizados en la base de datos
+    await lastGame.save();
+
+    return lastGame;
+  }
+  async specificGameConfig(id: string) {
+    // Obtener el último juego de configuración
+    const lastGame = await this.getLastGameConfig();
+
+    if (!lastGame) {
+      throw new Error('No se encontró el juego');
+    }
+
+    // Buscar la categoría dentro de `categoriesSelected` que coincida con `categoryId._id`
+    const categoryToUpdate = lastGame.categoriesSelected.find(
+      (categorySelected: any) =>
+        categorySelected.categoryId._id.toString() === id
+    );
+
+    return categoryToUpdate;
   }
 }
 

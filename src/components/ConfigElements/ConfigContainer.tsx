@@ -9,6 +9,7 @@ interface ConfigContainerProps {
   children?: ReactNode; // Si necesitas soportar 'children'
   both?: boolean;
   externalFn?: (value: any) => void;
+  externalFnDelete?: (value: any) => void;
   saveFn?: () => void;
   showButtons?: boolean;
 }
@@ -19,6 +20,7 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
   externalFn,
   saveFn,
   showButtons = true,
+  externalFnDelete,
 }) => {
   const intervalValue = 3; // Valor constante para el input
   const [edit, setEdit] = useState(false);
@@ -67,6 +69,10 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
                   alt="Edit"
                   width={30}
                   height={30}
+                  onClick={() => {
+                    if (externalFnDelete) externalFnDelete(true);
+                    console.log('Delete');
+                  }}
                 />
               </>
             ) : (

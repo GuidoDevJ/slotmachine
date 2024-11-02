@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   await db.connect();
   let body = await request.json();
-  console.log(body);
   // Convertir los IDs a ObjectId
   const transformedCategories = body.categoriesSelected.map(
     (category: any) => ({

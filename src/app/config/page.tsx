@@ -62,7 +62,7 @@ const ConfigPage = () => {
         <div className="mx-auto my-auto p-6">
           <Button color="primary" size="small">
             <Link href={"/config/addCategory"}>
-                + Agregar Categorias
+                <p className='text-[16px] text-center pb-1'><span className="text-[24px]">+</span> Agregar Categoria</p>
             </Link>
           </Button>
         </div>

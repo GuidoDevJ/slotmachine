@@ -88,7 +88,7 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
               onClick={(e: any) => selectedProduct(e)}
               key={c._id}
               data-key={c._id}
-              className={`max-w-[150px] w-full h-[300px] flex flex-col border-solid border-[2px] rounded-lg border-red-600`}
+              className={`max-w-[150px] w-full h-[250px] flex flex-col border-solid border-[2px] rounded-lg border-red-600`}
             >
               <div className="w-full h-[75%]">
                 <Image
@@ -100,7 +100,7 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
                   layout="responsive" // Asegura que la imagen es responsive
                 />
               </div>
-              <div className="w-full h-[25%] bg-slate-200 flex flex-col justify-center p-2">
+              <div className="w-full h-[25%] bg-[#CAC4D0] flex flex-col justify-center p-2">
                 <h3 className="text-[16px] font-bold mb-2">{c.name}</h3>
                 <span className="text-[8px] text-[#000]">{c.description}</span>
               </div>

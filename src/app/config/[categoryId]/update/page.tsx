@@ -109,7 +109,7 @@ const UpdateCategorySelected = () => {
                   layout="responsive" // Asegura que la imagen es responsive
                 />
               </div>
-              <div className="w-full h-[25%] bg-slate-200 flex flex-col justify-center p-2">
+              <div className="w-full h-[25%] bg-[#CAC4D0] flex flex-col justify-center p-2">
                 <h3 className="text-[16px] font-bold mb-2">{c.name}</h3>
                 <span className="text-[8px] text-[#000]">{c.description}</span>
               </div>

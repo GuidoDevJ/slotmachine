@@ -3,12 +3,7 @@
 import cloudinary from '@/utils/cloudinary';
 import { NextResponse } from 'next/server';
 
-// Desactivar el parser por defecto de Next.js
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = 'nodejs'; // Especifica el runtime si es necesario
 
 export async function POST(req: Request) {
   try {
@@ -26,7 +21,9 @@ export async function POST(req: Request) {
     // Convertir el archivo a un buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+
     console.log('soy el buffer ============>', buffer);
+
     // Subir el archivo a Cloudinary usando upload_stream
     const uploadResult = await new Promise<any>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(

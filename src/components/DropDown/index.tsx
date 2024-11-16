@@ -13,7 +13,7 @@ const DropDown = () => {
       <div>
         <button
           type="button"
-          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-gray-900"
+          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-white"
           id="menu-button"
           aria-expanded={isOpen}
           aria-haspopup="true"
@@ -21,7 +21,7 @@ const DropDown = () => {
         >
           {/* Icono de menú hamburguesa */}
           <svg
-            className="h-5 w-5 text-black-400"
+            className="h-5 w-5 text-white-400"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
@@ -37,7 +37,7 @@ const DropDown = () => {
 
       {isOpen && (
         <div
-          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="absolute right-0 z-10 m-[17px] mt-[15px] mr-[12px] w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"

@@ -11,9 +11,9 @@ type ButtonProps = {
 const Button = ({disabled=false,  size, children , color="primary", large="small",type="button", onClick}:ButtonProps) => {
   // Define los tamaños posibles
   const sizes = {
-    small: 'py-2 px-4 text-sm',
-    medium: 'py-4 px-6 text-base',
-    large: 'py-6 px-8 text-lg',
+    small: 'min-w-[189px] min-h-[40px] py-2 px-4 text-sm',
+    medium: 'min-w-[189px] min-h-[40px] py-4 px-6 text-base',
+    large: 'min-w-[189px] min-h-[40px] py-6 px-8 text-lg',
   };
   const colors = {
     primary: 'bg-primary',

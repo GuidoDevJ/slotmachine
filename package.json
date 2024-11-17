@@ -16,7 +16,7 @@
     "cloudinary": "^2.5.0",
     "formidable": "^3.5.1",
     "formik": "^2.4.6",
-    "jose": "^5.9.2",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "mongodb": "^6.9.0",

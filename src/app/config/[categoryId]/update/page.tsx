@@ -15,9 +15,10 @@ const UpdateCategorySelected = () => {
     queryKey: [`category ${categoryId}`],
     queryFn: () => getSpecificConfig(categoryId as string), // Pass a function that calls getSpecificConfig
   });
+  console.log(selectProd?.categoryId?.name)
   const [allProducts,setAllProducts] = useState([])
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>('Sandwiches');
+  const [inputValue, setInputValue] = useState<string>(selectProd?.categoryId?.name);
   const mutation = useMutation({
     mutationFn: (data:any)=>PatchCategorySelected(data,categoryId as string),
     onSuccess: async (data) => {
@@ -83,7 +84,7 @@ const UpdateCategorySelected = () => {
       <h2 className="mb-4 font-normal text-gray-700 mt-10">Categorías</h2>
       <input
         className="w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"
-        value={inputValue}
+        value={selectProd?.categoryId.name }
         disabled={true}
       />
       <h2 className="mt-4 font-normal text-gray-700">Imágenes seleccionadas</h2>

@@ -1,9 +1,19 @@
 'use client'
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const logOut = useAuthStore((state) => state.logout); // Obtiene la función login de Zustand
+  const navigation = useRouter()
 
+  const goToLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Previene el comportamiento predeterminado
+    console.log('go to login');
+    logOut();
+    navigation.push('login');
+  };
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -68,6 +78,7 @@ const DropDown = () => {
                 role="menuitem"
                 tabIndex={0}
                 id="menu-item-3"
+                onClick={goToLogin}
               >
                 Sign out
               </button>

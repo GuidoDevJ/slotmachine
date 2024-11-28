@@ -13,20 +13,25 @@ class MongoConnection {
     }
     return MongoConnection.instance;
   }
-
   public async connect() {
-    if (mongoose.connection.readyState >= 1) {
-      return;
-    }
+    try {
+      const MONGODB_URI =
+        process.env.MONGODB_URI || 'mongodb://localhost:27017/nextjs_auth';
+      if (!MONGODB_URI) {
+        throw new Error(
+          'Por favor define la variable MONGODB_URI en el archivo .env.local'
+        );
+      }
 
-    const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/nextjs_auth';
-    if (!MONGODB_URI) {
-      throw new Error('Por favor define la variable MONGODB_URI en el archivo .env.local');
-    }
+      await mongoose.connect(MONGODB_URI, {
+        bufferCommands: false,
+      });
 
-    return mongoose.connect(MONGODB_URI, {
-      bufferCommands: false,
-    });
+      console.log('Conexión a MongoDB establecida correctamente.');
+    } catch (error) {
+      console.error('Error al conectar a MongoDB:', error);
+      throw error; // Propaga el error para manejarlo donde se llama a `connect()`
+    }
   }
 }
 

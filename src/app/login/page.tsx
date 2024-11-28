@@ -8,18 +8,22 @@ import { useEffect, useState } from 'react';
 const BackOffice = () => {
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
+  const nameOfCasino = "Casinos del Mocona"
   useEffect(() => {
-    let token = localStorage.getItem('token');
-    if (!token) {
+    let token = JSON.parse(localStorage.getItem('auth-storage') as any);
+    console.log(token);
+    if (token.token === null) {
+      console.log("GHola")
       router.push('/login'); // Redirigir al login si no está autenticado
     }
   }, [router]);
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="h-80 flex flex-col items-center justify-center">
+      <div className="h-auto flex flex-col items-center justify-center">
         <Logo />
-        <h1 className="text-2xl md:text-4xl lg:text-5xl">Casino del Mocona</h1>
+        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold">{nameOfCasino}</h1>
+        <h3 className='mt-10 mb-10 text-1xl md:text-2xl lg:text-3xl'>Ingresa tus datos</h3>
       </div>
       <LoginForm setIsloading={setIsloading} />
       {isLoading ? (

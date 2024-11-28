@@ -48,7 +48,6 @@ export const useAuthStore = create<AuthState>()(
           get().logout();
         }
       },
-
       logout: () => {
         set({
           token: null,

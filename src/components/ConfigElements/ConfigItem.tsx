@@ -2,23 +2,9 @@ import DeleteCategory from '@/ui/PopUp/DeleteCategory';
 import { Category, getProductsCategories } from '@/utils/requests';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ConfigContainer from './ConfigContainer';
-const initialState = [
-  {
-    id: 1,
-    name: 'Cerveza',
-    products: [
-      {
-        _id: '1',
-        name: 'Brahma',
-        description: 'Rica como la empa',
-        imageURL:
-          'https://cdn.shopify.com/s/files/1/0271/8158/0388/files/Budweiser_botella-33-cl_480x480.jpg?v=1621272814',
-      },
-    ],
-  },
-];
 
 interface CategorySelected {
   name: string;
@@ -33,15 +19,16 @@ interface CategorySelected {
   }[];
 }
 const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
+  const navigation = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(false); // Tipar el estado correctamente
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>('Sandwiches');
+  const [inputValue, setInputValue] = useState<string>(name);
   const [show, setShow] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     text: string;
     id: string;
   }>({
-    text: 'Sandwiches',
+    text: name,
     id: '',
   });
   const {
@@ -53,6 +40,9 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
     queryFn: () => getProductsCategories(selectedCategory!.id) as any,
     enabled: !!selectedCategory,
   });
+  const goTo=()=>{
+    navigation.push(`/config/${categoryId}/update`)
+  }
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
@@ -70,7 +60,7 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
     handleSelect(idElement as string);
   };
   return (
-    <ConfigContainer both={true} externalFnDelete={setShow}>
+    <ConfigContainer both={true} externalFnDelete={setShow} externalFn={goTo}>
       <h2 className="mb-4 font-normal text-gray-700 mt-10">Categorías</h2>
       <input
         className="w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"

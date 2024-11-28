@@ -29,9 +29,8 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  await db.connect();
-
   try {
+    await db.connect();
     const allCategories = await CategoriesRepository.getAllCategories();
     return NextResponse.json(allCategories, { status: 200 });
   } catch (error: any) {

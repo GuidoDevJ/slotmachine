@@ -43,6 +43,7 @@ class CategoriesRepository {
   }
 
   async getAllCategories(): Promise<ICategory[]> {
+    console.log('getAllCategories');
     try {
       const categories = await Category.find();
       return categories;

@@ -48,21 +48,20 @@ const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,s
 
   return (
     <>
-      <div className="relative group w-full h-[280px] rounded-xl">
-        {/* Componente A: Imagen del producto */}
-        <div className="group-hover:hidden w-full h-full flex flex-col bg-gray-200">
-          <div className="w-full h-[80%]">
+      <div className="relative group w-full h-[280px] rounded-xl bg-[#fff]">
+        <div className="group-hover:hidden w-full h-full flex flex-col rounded-xl border-[#ddd] border-solid border-[2px]">
+          <div className="w-full h-[75%] relative flex justify-center items-center">
             <Image
               src={imageUrl}
               alt="product"
               layout="fill"
               objectFit="cover"
+              className="w-10px"
             />
           </div>
-          <div className="w-full h-[20%] bg-slate-400">{description}</div>
+          <div className="w-full h-[25%] text-[#1D1B20] bg-[#fff] font-bold ml-4 flex justify-start items-center">{description}</div>
         </div>
-        {/* Componente B: Iconos de editar y borrar */}
-        <div className="hidden group-hover:flex items-center justify-evenly bg-red-600 w-full h-full p-4">
+        <div className="hidden group-hover:flex items-center justify-evenly rounded-xl bg-red-600 w-full h-full p-4">
           <Image src={Edit} width={50} height={50} alt="icon-edit" onClick={handlerGoToEdit} className='hover:cursor-pointer'/>
           <Image
             src={Delete}

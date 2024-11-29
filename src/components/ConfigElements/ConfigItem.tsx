@@ -80,19 +80,18 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
               data-key={c._id}
               className={`max-w-[150px] w-full h-[250px] flex flex-col border-solid border-[2px] rounded-lg border-red-600`}
             >
-              <div className="w-full h-[75%]">
-                <Image
-                  className="w-full h-full"
-                  src={c.imageURL}
-                  alt={c.name}
-                  width={480} // Especifica el ancho real de la imagen
-                  height={480} // Especifica la altura real de la imagen
-                  layout="responsive" // Asegura que la imagen es responsive
-                />
+              <div className="w-full h-[65%] relative">
+              <Image
+              src={c.imageURL}
+              alt={c.name}
+              layout="fill"
+              objectFit="cover"
+              className="w-10px"
+            />
               </div>
-              <div className="w-full h-[25%] bg-[#CAC4D0] flex flex-col justify-center p-2">
-                <h3 className="text-[16px] font-bold mb-2">{c.name}</h3>
-                <span className="text-[8px] text-[#000]">{c.description}</span>
+              <div className="w-full h-[35%]  bg-[#FEF7FF] flex flex-col justify-center p-2">
+                <h3 className="text-[16px] text-[#1D1B20] font-bold mb-2">{c.name}</h3>
+                <span className="text-[12px]  text-[##49454F] text-[#000]">{c.description}</span>
               </div>
             </div>
           ))}

@@ -50,7 +50,7 @@ const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,s
     <>
       <div className="relative group w-full h-[280px] rounded-xl bg-[#fff]">
         <div className="group-hover:hidden w-full h-full flex flex-col rounded-xl border-[#ddd] border-solid border-[2px]">
-          <div className="w-full h-[75%] relative flex justify-center items-center">
+          <div className="w-full h-[60%] relative flex justify-center items-center">
             <Image
               src={imageUrl}
               alt="product"
@@ -59,7 +59,8 @@ const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,s
               className="w-10px"
             />
           </div>
-          <div className="w-full h-[25%] text-[#1D1B20] bg-[#fff] font-bold ml-4 flex justify-start items-center">{description}</div>
+          <p className="w-full h-[15%] text-[#1D1B20] text-[16px] bg-[#fff] font-bold ml-2 p-2 flex justify-start items-center">{name}</p>
+          <span className="w-full h-[25%] text-[##49454F] text-[12px] bg-[#fff] font-bold ml-2  p-2 flex justify-start items-center">{description}</span>
         </div>
         <div className="hidden group-hover:flex items-center justify-evenly rounded-xl bg-red-600 w-full h-full p-4">
           <Image src={Edit} width={50} height={50} alt="icon-edit" onClick={handlerGoToEdit} className='hover:cursor-pointer'/>

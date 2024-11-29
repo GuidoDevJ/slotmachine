@@ -56,7 +56,7 @@ const ProductsCategories = () => {
             ))}
             {/*Agregar producto nuevo */}
             <div className="relative group w-full h-[280px]">
-              <div className="flex flex-col items-center justify-evenly w-full h-full p-4 rounded-xl border-[#ddd] border-solid border-[2px]">
+              <div className="flex flex-col items-center justify-center w-full h-full p-4 rounded-xl border-[#ddd] border-solid border-[2px]">
                 <h3 className="text-center font-semibold">Agregar un producto nuevo</h3>
                 <Image
                   src={Add}

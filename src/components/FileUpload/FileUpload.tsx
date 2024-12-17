@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
-const FileUpload = ({ setFile }) => {
-  const [selectedFile, setSelectedFile] = useState(null); // Imagen seleccionada
-  const [preview, setPreview] = useState(null); // Vista previa de la imagen
-  const [uploading, setUploading] = useState(false); // Estado de carga
-  const inputRef = useRef(null);
+interface FileUploadProps {
+  setFile: (url: string) => void; // Prop `setFile` recibe una URL como string
+}
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+const FileUpload: React.FC<FileUploadProps> = ({ setFile }) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Imagen seleccionada
+  const [preview, setPreview] = useState<string | null>(null); // Vista previa de la imagen
+  const [uploading, setUploading] = useState<boolean>(false); // Estado de carga
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
     if (file) {
       setSelectedFile(file);
       setPreview(URL.createObjectURL(file));
@@ -41,11 +45,11 @@ const FileUpload = ({ setFile }) => {
         },
       });
 
-      const cloudinaryUrl = response.data.url;
+      const cloudinaryUrl = response.data.url as string;
       setFile(cloudinaryUrl); // Establece la URL en el estado externo
       alert('Imagen subida exitosamente');
       handleRemoveImage(); // Limpia la imagen seleccionada tras subirla
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al subir la imagen:', error.response?.data || error.message);
       alert('Error al subir la imagen.');
     } finally {

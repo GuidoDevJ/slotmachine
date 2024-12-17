@@ -1,7 +1,6 @@
 'use client';
 import { useAuthStore } from '@/stores/useAuthStore';
 import Button from '@/ui/Buttons/ButtonText';
-import { MainSpinner } from '@/ui/Loaders';
 import { Login } from '@/utils/mutations';
 import { useMutation } from '@tanstack/react-query';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -52,14 +51,14 @@ const LoginForm = ({setIsloading}:Props) => {
       }}
     >
       {({ isSubmitting, errors, touched }) => (
-        <Form className="w-[50vw] max-w-[600px]">
+        <Form className="w-[300px] max-w-[600px]">
           <div className="w-full mb-5">
             <label
               htmlFor="email"
-              className={`block mb-2 text-sm font-medium ${
+              className={`block mb-2 text-[14px] md:text-[20px] font-medium ${
                 errors.email && touched.email
                   ? 'text-red-700 dark:text-red-500'
-                  : 'text-green-700 dark:text-green-500'
+                  : 'text-[#ddd]-500'
               }`}
             >
               Your name
@@ -69,19 +68,19 @@ const LoginForm = ({setIsloading}:Props) => {
               name="email"
               id="email"
               placeholder="guido@xxx.com"
-              className={`block w-full p-2.5 text-sm rounded-lg focus:ring ${
+              className={`block h-[30px] md:h-[40px] w-full p-2.5 text-[16px] rounded-[4px] focus:ring ${
                 errors.email && touched.email
                   ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:border-red-500 dark:bg-gray-700 dark:border-red-500 dark:text-red-500 dark:placeholder-red-500'
-                  : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:border-green-500 dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
+                  : 'bg-[#fff] border-[##E0E0E0] border-[1px] text-[#ddd]  dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
               }`}
             />
             <ErrorMessage
               name="email"
               component="p"
-              className="mt-2 text-sm text-red-600 dark:text-red-500"
+              className="mt-2 text-[10px] text-red-600 dark:text-red-500"
             />
             {!errors.email && touched.email && (
-              <p className="mt-2 text-sm text-green-600 dark:text-green-500">
+              <p className="mt-2 text-[12px] text-green-600 dark:text-green-500">
                 <span className="font-medium">Alright!</span> email available!
               </p>
             )}
@@ -89,10 +88,10 @@ const LoginForm = ({setIsloading}:Props) => {
           <div className="mb-5">
             <label
               htmlFor="password"
-              className={`block mb-2 text-sm font-medium ${
+              className={`block mb-2 text-[14px] md:text-[20px] font-medium ${
                 errors.password && touched.password
                   ? 'text-red-700 dark:text-red-500'
-                  : 'text-green-700 dark:text-green-500'
+                  : 'text-[#ddd]-500'
               }`}
             >
               Password
@@ -102,19 +101,19 @@ const LoginForm = ({setIsloading}:Props) => {
               name="password"
               id="password"
               placeholder="*********"
-              className={`block  w-full p-2.5 text-sm rounded-lg focus:ring ${
+              className={`block h-[30px] md:h-[40px] w-full p-2.5 text-[16px] rounded-[4px] focus:ring ${
                 errors.password && touched.password
                   ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:border-red-500 dark:bg-gray-700 dark:border-red-500 dark:text-red-500 dark:placeholder-red-500'
-                  : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:border-green-500 dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
+                  : 'bg-[#fff] border-[##E0E0E0] border-[1px] text-[#ddd]  dark:bg-gray-700 dark:border-green-500 dark:text-green-400 dark:placeholder-green-500'
               }`}
             />
             <ErrorMessage
               name="password"
               component="p"
-              className="mt-2 text-sm text-red-600 dark:text-red-500"
+              className="mt-2 text-[10px] text-red-600 dark:text-red-500"
             />
             {!errors.password && touched.password && (
-              <p className="mt-2 text-sm text-green-600 dark:text-green-500">
+              <p className="mt-2 text-[10px] text-green-600 dark:text-green-500">
                 <span className="font-medium">Alright!</span> password correct!
               </p>
             )}

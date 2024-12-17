@@ -1,6 +1,6 @@
+import '@/app/api/instrumentation';
 import { Schema } from 'mongoose';
 import Games, { ICategoriesSelected, IGame } from '../models/Game';
-
 class GameRepository {
   // Crear o actualizar las configuraciones de un juego
   async createGameSettings(gameSettings: IGame): Promise<IGame> {
@@ -95,17 +95,19 @@ class GameRepository {
 
   async getLastGameConfig(): Promise<IGame> {
     return await Games.findOne()
-      .sort({ lastUpdated: -1 }) // Ordenar por la última actualización
+      .sort({ lastUpdated: -1 }) // Ordena por última actualización
       .populate({
-        path: 'categoriesSelected.categoryId', // Hacer populate del campo categoryId
+        path: 'categoriesSelected.categoryId', // Hacer populate de categoryId
         select: 'name', // Solo selecciona el campo "name" de la categoría
       })
       .populate({
-        path: 'categoriesSelected.products', // Hacer populate del campo products
+        path: 'categoriesSelected.products', // Hacer populate de products
+        select: 'name price imageURL', // Selecciona campos específicos de Product
       })
-      .setOptions({ strictPopulate: false }) // Desactiva strictPopulate
+      .setOptions({ strictPopulate: false }) // Permite populate más flexible
       .exec();
   }
+
   async deleteGameConfig(id: string) {
     const lastGame = await this.getLastGameConfig();
 

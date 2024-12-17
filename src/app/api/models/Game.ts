@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+
 // Modelo Game
 export interface ICategoriesSelected {
   categoryId: Schema.Types.ObjectId;
@@ -14,7 +15,6 @@ const categoriesSelectedSchema = new Schema<ICategoriesSelected>({
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: 'Category',
-    required: true,
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
 });
@@ -27,6 +27,7 @@ const gameSchema = new Schema<IGame>({
   },
 });
 
-const Games =
-  mongoose.models.Games || mongoose.model<IGame>('Games', gameSchema);
-export default Games;
+// Asegúrate de no redefinir el modelo
+const GameModel =
+  mongoose.models.Game || mongoose.model<IGame>('Game', gameSchema);
+export default GameModel;

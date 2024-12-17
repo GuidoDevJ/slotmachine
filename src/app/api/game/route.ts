@@ -36,8 +36,10 @@ export async function GET(request: Request) {
 
   try {
     const lastSetting = await GameRepository.getLastGameConfig();
+    console.log(lastSetting);
     return NextResponse.json(lastSetting, { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ message: `${error.message}` }, { status: 500 });
   }
 }

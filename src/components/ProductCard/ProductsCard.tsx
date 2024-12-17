@@ -8,23 +8,31 @@ import Image from 'next/image';
 interface ProductCard {
   description: string;
   imageUrl: string;
-  name:string;
-  probability:number;
-  hiddenPopUp:(boolean:boolean)=>any,
-  id:string,
-  setSelectProduct:(id:string)=>any,
-  goToEditForm:(id:string)=>any
-
+  name: string;
+  probability: number;
+  hiddenPopUp: (boolean: boolean) => any;
+  id: string;
+  setSelectProduct: (id: string) => any;
+  goToEditForm: (id: string) => any;
 }
 
-const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,setSelectProduct,goToEditForm}: ProductCard) => {
-  const productSelected =  {
+const ProductsCard = ({
+  description,
+  imageUrl,
+  name,
+  probability,
+  hiddenPopUp,
+  id,
+  setSelectProduct,
+  goToEditForm,
+}: ProductCard) => {
+  const productSelected = {
     _id: id,
     name,
     imageUrl,
     description,
     probability,
-  }
+  };
   const mutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: async (data) => {
@@ -34,17 +42,17 @@ const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,s
       console.log("I'm second!");
     },
   });
-  const setProduct = useProductCategory((state)=>state.setProductCategory)
+  const setProduct = useProductCategory((state) => state.setProductCategory);
 
   const deleteAction = (e: any) => {
     hiddenPopUp(false);
-    setSelectProduct(id)
+    setSelectProduct(id);
   };
 
-  const handlerGoToEdit =()=>{
-    setProduct(productSelected)
-    goToEditForm(id)
-  }
+  const handlerGoToEdit = () => {
+    setProduct(productSelected);
+    goToEditForm(id);
+  };
 
   return (
     <>
@@ -59,23 +67,35 @@ const ProductsCard = ({ description, imageUrl ,name,probability,hiddenPopUp,id,s
               className="w-10px"
             />
           </div>
-          <p className="w-full h-[15%] text-[#1D1B20] text-[16px] bg-[#fff] font-bold ml-2 p-2 flex justify-start items-center">{name}</p>
-          <span className="w-full h-[25%] text-[##49454F] text-[12px] bg-[#fff] font-bold ml-2  p-2 flex justify-start items-center">{description}</span>
+          <div className=" flex flex-col h-[40%] justify-evenly">
+            <p className="h-[40%] text-[#1D1B20] text-[16px] bg-[#fff] font-bold ml-2 flex justify-start items-center">
+              {name}
+            </p>
+            <span className="h-[20%] text-[##49454F] text-[12px] bg-[#fff] ml-2 flex justify-start items-center">
+              {description}
+            </span>
+          </div>
         </div>
         <div className="hidden group-hover:flex items-center justify-evenly rounded-xl bg-red-600 w-full h-full p-4">
-          <Image src={Edit} width={50} height={50} alt="icon-edit" onClick={handlerGoToEdit} className='hover:cursor-pointer'/>
+          <Image
+            src={Edit}
+            width={50}
+            height={50}
+            alt="icon-edit"
+            onClick={handlerGoToEdit}
+            className="hover:cursor-pointer"
+          />
           <Image
             src={Delete}
             width={50}
             height={50}
             alt="icon-delete"
             onClick={(e) => deleteAction(e)}
-            className='hover:cursor-pointer'
+            className="hover:cursor-pointer"
           />
         </div>
       </div>
     </>
-
   );
 };
 

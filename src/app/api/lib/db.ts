@@ -1,6 +1,5 @@
 // lib/db.ts
 import mongoose from 'mongoose';
-
 class MongoConnection {
   private static instance: MongoConnection;
   private constructor() {
@@ -15,8 +14,7 @@ class MongoConnection {
   }
   public async connect() {
     try {
-      const MONGODB_URI =
-        process.env.MONGODB_URI || 'mongodb://localhost:27017/nextjs_auth';
+      const MONGODB_URI = process.env.MONGODB_URI;
       if (!MONGODB_URI) {
         throw new Error(
           'Por favor define la variable MONGODB_URI en el archivo .env.local'

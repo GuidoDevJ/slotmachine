@@ -8,6 +8,7 @@ export interface ICategoriesSelected {
 
 export interface IGame extends Document {
   lastUpdated: Date;
+  winnerInterval?: number;
   categoriesSelected: ICategoriesSelected[];
 }
 
@@ -21,6 +22,7 @@ const categoriesSelectedSchema = new Schema<ICategoriesSelected>({
 
 const gameSchema = new Schema<IGame>({
   lastUpdated: { type: Date, default: Date.now },
+  winnerInterval: { type: Number, default: 0 },
   categoriesSelected: {
     type: [categoriesSelectedSchema],
     required: [true, 'Las categorías seleccionadas son requeridas'],

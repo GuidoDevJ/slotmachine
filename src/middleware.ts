@@ -10,9 +10,10 @@ interface Req extends Request {
 export async function middleware(request: Req) {
   const url = new URL(request.url);
   const pathname = url.pathname;
+  const excludeOrigins = ['/api/auth/login', '/api/game'];
 
   // Definir las rutas que deben ser excluidas
-  if (pathname.startsWith('/api/auth/')) {
+  if (excludeOrigins.includes(pathname)) {
     return NextResponse.next();
   }
 

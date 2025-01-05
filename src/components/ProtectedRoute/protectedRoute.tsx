@@ -3,17 +3,21 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const token = useAuthStore((state) => state.token);
   const router = useRouter();
 
   useEffect(() => {
     let token = localStorage.getItem('token');
-    if(!token){
-        router.push('/login'); // Redirigir al login si no está autenticado
-    }else{
+    if (!token) {
+      router.push('/login'); // Redirigir al login si no está autenticado
+    } else {
       const decoded = jwtDecode(token as string) as any;
       const expirationTime = decoded.exp * 1000;
       const now = Date.now();
@@ -22,11 +26,15 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
         router.push('/login'); // Redirigir al login si no está autenticado
       }
     }
-
   }, [isAuthenticated, router]);
 
-
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  );
 };
 
 export default ProtectedRoute;

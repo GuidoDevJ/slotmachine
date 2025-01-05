@@ -1,5 +1,6 @@
 'use client'
 import { useAuthStore } from '@/stores/useAuthStore';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -10,7 +11,6 @@ const DropDown = () => {
 
   const goToLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Previene el comportamiento predeterminado
-    console.log('go to login');
     logOut();
     navigation.push('login');
   };
@@ -53,16 +53,16 @@ const DropDown = () => {
           aria-labelledby="menu-button"
         >
           <div className="py-1" role="none">
-            <a
-              href="/"
+            <Link
+              href="/config"
               className="block px-4 py-2 text-sm text-gray-700"
               role="menuitem"
               tabIndex={0}
               id="menu-item-0"
             >
               Inicio
-            </a>
-            <a
+            </Link>
+            <Link
               href="/categories"
               className="block px-4 py-2 text-sm text-gray-700"
               role="menuitem"
@@ -70,7 +70,7 @@ const DropDown = () => {
               id="menu-item-1"
             >
               Categorias
-            </a>
+            </Link>
             <form method="POST" action="#" role="none">
               <button
                 type="submit"

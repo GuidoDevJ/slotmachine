@@ -1,81 +1,108 @@
-import axios from 'axios';
-import { useRef, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 
 interface FileUploadProps {
-  setFile: (url: string) => void; // Prop `setFile` recibe una URL como string
+  setFile: (url: string) => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ setFile }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Imagen seleccionada
-  const [preview, setPreview] = useState<string | null>(null); // Vista previa de la imagen
-  const [uploading, setUploading] = useState<boolean>(false); // Estado de carga
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [dragging, setDragging] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      setSelectedFile(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
-  const handleRemoveImage = () => {
-    setSelectedFile(null);
-    setPreview(null);
-    if (inputRef.current) inputRef.current.value = ""; // Resetea el input file
-  };
+  const handleFileChange = async (file: File | null) => {
+    if (!file) return;
 
-  const handleSubmit = async () => {
-    if (!selectedFile) {
-      alert("Por favor, selecciona una imagen antes de enviar.");
-      return;
-    }
+    setError(null); // Limpia errores anteriores
+    setSelectedFile(file);
+    setPreview(URL.createObjectURL(file));
 
+    // Sube automáticamente el archivo
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append("file", file);
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     try {
       setUploading(true);
-      const response = await axios.post('/api/upload', formData, {
+      const response = await axios.post("/api/upload", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
 
       const cloudinaryUrl = response.data.url as string;
-      setFile(cloudinaryUrl); // Establece la URL en el estado externo
-      alert('Imagen subida exitosamente');
-      handleRemoveImage(); // Limpia la imagen seleccionada tras subirla
+      setFile(cloudinaryUrl);
+      alert("Imagen subida exitosamente");
     } catch (error: any) {
-      console.error('Error al subir la imagen:', error.response?.data || error.message);
-      alert('Error al subir la imagen.');
+      console.error("Error al subir la imagen:", error.response?.data || error.message);
+      setError("Error al subir la imagen.");
     } finally {
       setUploading(false);
     }
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    handleFileChange(file);
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => setDragging(false);
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragging(false);
+
+    const file = event.dataTransfer.files[0];
+    handleFileChange(file);
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setPreview(null);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
   return (
     <div className="file-upload">
       <div
-        className="upload-area rounded border border-dashed border-gray-300 p-4 flex flex-col items-center"
+        className={`relative flex justify-center items-center upload-area ... ${
+          dragging ? "bg-blue-200" : ""
+        } bg-slate-500 h-52`}
+        onClick={() => inputRef.current?.click()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         style={{
           backgroundImage: preview ? `url(${preview})` : undefined,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         {preview ? (
-          <>
-            <button
-              className="remove-button bg-red-500 text-white px-4 py-2 rounded mb-4"
-              onClick={handleRemoveImage}
-            >
-              Eliminar imagen
-            </button>
-          </>
+          <button
+            className="remove-button absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+            onClick={handleRemoveImage}
+          >
+            Eliminar imagen
+          </button>
         ) : (
           <>
             <input
@@ -83,25 +110,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ setFile }) => {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={handleFileChange}
+              onChange={handleInputChange}
             />
-            <button
-              className="upload-button bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => inputRef.current?.click()}
-            >
-              Seleccionar imagen
-            </button>
+            <p className="text-center">
+              Arrastra y suelta una imagen aquí o haz clic para seleccionarla.
+            </p>
           </>
         )}
       </div>
-      {selectedFile && (
-        <button
-          className="submit-button bg-green-500 text-white px-4 py-2 rounded mt-4"
-          onClick={handleSubmit}
-          disabled={uploading}
-        >
-          {uploading ? 'Subiendo...' : 'Subir imagen'}
-        </button>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {uploading && (
+        <p className="text-blue-500 mt-2">Subiendo imagen...</p>
       )}
     </div>
   );

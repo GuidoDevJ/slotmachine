@@ -23,7 +23,6 @@ const validationSchema = Yup.object().shape({
     .min(8, 'La descripción es demasiado corta')
     .required('La descripción de la categoría es requerida'),
   probability: Yup.number()
-    .max(1, 'La probabilidad debe ser como máximo 1')
     .min(0, 'La probabilidad debe ser al menos 0')
     .required('La probabilidad es requerida'),
   imageUrl: Yup.string()
@@ -62,7 +61,6 @@ const EditProduct = ({description,imageUrl,name,probability}:Props) => {
           ...values,
           imageUrl: file,
         };
-        console.log(file)
         // Aquí puedes enviar formData a tu backend o manejarlo según tus necesidades
         setTimeout(() => {
             const partsUrl = pathname.split('/')
@@ -99,8 +97,7 @@ const EditProduct = ({description,imageUrl,name,probability}:Props) => {
             />
             {!errors.name && touched.name && (
               <p className="mt-2 text-sm text-green-600 dark:text-green-500">
-                <span className="font-medium">¡Genial!</span> El nombre está
-                disponible.
+                <span className="font-medium">¡Genial!</span>
               </p>
             )}
           </div>

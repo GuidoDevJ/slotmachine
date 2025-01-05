@@ -39,7 +39,7 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
                 aria-label="Guardar cambios"
                 onClick={() => {
                   saveFn && saveFn();
-                  console.log('Guardado');
+                  setEdit(!edit);
                 }}
               >
                 Guardar
@@ -60,7 +60,6 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
                   onClick={() => {
                     setEdit(!edit);
                     if (externalFn) externalFn(false);
-                    console.log('Edit');
                   }}
                 />
                 <Image

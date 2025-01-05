@@ -107,7 +107,19 @@ class GameRepository {
       .setOptions({ strictPopulate: false }) // Permite populate más flexible
       .exec();
   }
+  async setWinnetInterval(interval: number, lastUpdated: Date) {
+    const lastGame = await this.getLastGameConfig();
 
+    if (!lastGame) {
+      throw new Error('No se encontró el juego');
+    }
+
+    lastGame.winnerInterval = interval;
+    lastGame.lastUpdated = lastUpdated;
+    await lastGame.save();
+
+    return lastGame;
+  }
   async deleteGameConfig(id: string) {
     const lastGame = await this.getLastGameConfig();
 

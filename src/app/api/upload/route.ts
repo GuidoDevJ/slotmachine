@@ -29,6 +29,8 @@ export async function POST(req: Request) {
       const stream = cloudinary.uploader.upload_stream(
         {
           upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+          quality: 'auto:best', // Optimización automática de calidad
+          fetch_format: 'auto', // Usar el formato adecuado (por ejemplo, WebP)
         },
         (error, result) => {
           if (error) return reject(error);

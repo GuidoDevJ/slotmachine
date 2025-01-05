@@ -13,5 +13,6 @@ export default function Home() {
       {/* <DeletePopUp   show={false}/> */}
       <NewCategory description="Se agrego correctamente una categoria" title="Categoria nueva"/>
     </main>
+    
   );
 }

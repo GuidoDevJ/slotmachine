@@ -1,13 +1,13 @@
 'use client';
 import ConfigContainer from '@/components/ConfigElements/ConfigContainer';
 import ConfigItem from '@/components/ConfigElements/ConfigItem';
-import Header from '@/components/Header/Header';
 import ProtectedRoute from '@/components/ProtectedRoute/protectedRoute';
 import Button from '@/ui/Buttons/ButtonText';
+import { setIntervalWinner } from '@/utils/mutations';
 import { getConfig } from '@/utils/requests';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ConfigPage = () => {
   const [disabledInput, setDisabledInput] = useState<boolean>(true);
@@ -15,11 +15,16 @@ const ConfigPage = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(value);
     setInputValue(value);
   };
+  const mutation = useMutation({
+    mutationFn: (interval:number) =>
+      setIntervalWinner(interval) ,
+
+  });
+
   const saveWinnersCount = () => {
-    alert(`${inputValue}`);
+    mutation.mutate(parseInt(inputValue));
   };
     // useQuery para obtener las categorías
   const {
@@ -30,10 +35,13 @@ const ConfigPage = () => {
       queryKey: ['config'],
       queryFn: getConfig,
     });
+    
+    useEffect(()=>{
+      setInputValue(config.winnerInterval)
+    },[config])
   return (
     <ProtectedRoute>
-      <Header />
-      <div className="w-full flex flex-col justify-center items-center">
+      <div className="w-full min-h-[82vh] flex flex-col justify-center items-center">
         <h1 className="text-center font-bold text-2xl mt-10 mb-10">
           Configuración
         </h1>

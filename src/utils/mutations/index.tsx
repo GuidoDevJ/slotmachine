@@ -155,7 +155,26 @@ export const PatchCategorySelected = async(products:string[],id:string)=>{
     }
   }
 }
-
+export const setIntervalWinner = async(interval:number)=>{
+  try {
+    const response = await instance.post(`/api/game/winnerInterval`, {interval},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error) {
+      throw new Error(
+        error.response?.data?.message || "Error al setear los intervalos de ganadores"
+      );
+    } else {
+      throw new Error("Error inesperado.");
+    }
+  }
+}
 
 
 

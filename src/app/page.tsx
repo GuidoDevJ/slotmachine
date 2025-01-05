@@ -1,18 +1,13 @@
-import NewCategory from "@/ui/PopUp/newCategory";
+"use client"
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
+  const router = useRouter();
 
-    <main>
-      {/* <Logo/>
-      <Button color="primary" size="medium" >
-          Ingresar
-      </Button>
-      <PlayButton/>
-      <MainSpinner/> */}
-      {/* <DeletePopUp   show={false}/> */}
-      <NewCategory description="Se agrego correctamente una categoria" title="Categoria nueva"/>
-    </main>
-    
-  );
+  useEffect(() => {
+    router.replace('/game'); // Reemplaza la ruta actual por la nueva
+  }, [router]);
+
+  return null; // No es necesario renderizar nada
 }

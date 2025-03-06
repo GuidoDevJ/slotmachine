@@ -1,6 +1,8 @@
 'use client';
+import UseUploadingState from '@/hook/UploadingState';
 import Button from '@/ui/Buttons/ButtonText';
 import { PatchProduct } from '@/utils/mutations';
+import { uploadFile } from '@/utils/requests/uploadFile';
 import { useMutation } from '@tanstack/react-query';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { usePathname, useRouter } from 'next/navigation';
@@ -26,20 +28,21 @@ const validationSchema = Yup.object().shape({
     .min(0, 'La probabilidad debe ser al menos 0')
     .required('La probabilidad es requerida'),
   imageUrl: Yup.string()
-    .url('Debe ser una URL válida')
+    // .url('Debe ser una URL válida')
     .required('La imagen es requerida'),
 });
 
-const EditProduct = ({description,imageUrl,name,probability}:Props) => {
+const EditProduct = ({ description, imageUrl, name, probability }: Props) => {
   const navigate = useRouter();
   const pathname = usePathname();
+  const { setError, setUploading, error, uploading } = UseUploadingState();
 
-  const [file, setFile] = useState<string | null>(null); // Tipo ajustado a string o null
+  const [file, setFile] = useState<any | null>(null); // Tipo ajustado a string o null
   const mutation = useMutation({
-    mutationFn: (data:any)=>PatchProduct(data.product,data.id),
+    mutationFn: (data: any) => PatchProduct(data.product, data.id),
     onSuccess: async (data) => {
       navigate.push('/categories');
-    }
+    },
   });
 
   const handlerAddProduct = (data: any) => {
@@ -55,24 +58,32 @@ const EditProduct = ({description,imageUrl,name,probability}:Props) => {
         imageUrl,
       }}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting }) => {
+        const imageUrl = await uploadFile(
+          file as File,
+          setFile,
+          setUploading,
+          setError
+        );
         // Combinar los valores del formulario con la URL de la imagen
         const formData = {
           ...values,
-          imageUrl: file,
+          imageUrl,
         };
         // Aquí puedes enviar formData a tu backend o manejarlo según tus necesidades
         setTimeout(() => {
-            const partsUrl = pathname.split('/')
-          alert(JSON.stringify(formData, null, 2));
+          const partsUrl = pathname.split('/');
           const addProductJson = {
             name: values.name,
             description: values.description,
             probability: values.probability,
-            imageURL: values.imageUrl,
+            imageURL: imageUrl,
             categoryId: `${pathname.split('/')[2]}`,
           };
-          handlerAddProduct({product:addProductJson,id:partsUrl[partsUrl.length - 1]});
+          handlerAddProduct({
+            product: addProductJson,
+            id: partsUrl[partsUrl.length - 1],
+          });
           setSubmitting(false);
         }, 400);
       }}
@@ -164,6 +175,7 @@ const EditProduct = ({description,imageUrl,name,probability}:Props) => {
                 setFile(url);
                 setFieldValue('imageUrl', url);
               }}
+              imgUrl={imageUrl}
             />
             {errors.imageUrl && touched.imageUrl && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">

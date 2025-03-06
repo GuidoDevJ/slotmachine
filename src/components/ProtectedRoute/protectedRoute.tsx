@@ -15,6 +15,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     let token = localStorage.getItem('token');
+    console.log('token', token);
     if (!token) {
       router.push('/login'); // Redirigir al login si no está autenticado
     } else {

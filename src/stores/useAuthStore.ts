@@ -49,10 +49,12 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       logout: () => {
+        console.log('Holaa');
         set({
           token: null,
           isAuthenticated: false,
         });
+        localStorage.removeItem('token');
       },
     }),
     {

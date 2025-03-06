@@ -1,6 +1,8 @@
 'use client'
+import UseUploadingState from '@/hook/UploadingState';
 import Button from '@/ui/Buttons/ButtonText';
 import { AddProduct } from '@/utils/mutations';
+import { uploadFile } from '@/utils/requests/uploadFile';
 import { useMutation } from '@tanstack/react-query';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { usePathname, useRouter } from 'next/navigation';
@@ -19,14 +21,14 @@ const validationSchema = Yup.object().shape({
     .max(1, 'La probabilidad debe ser como máximo 1')
     .min(0, 'La probabilidad debe ser al menos 0')
     .required('La probabilidad es requerida'),
-  imageUrl: Yup.string().url('Debe ser una URL válida').required('La imagen es requerida'),
+  imageUrl: Yup.string().required('La imagen es requerida'),
 });
 
 const AddItemCategoryForm = () => {
   const navigate = useRouter();
   const pathname = usePathname();
-
-  const [file, setFile] = useState<string | null>(null); // Tipo ajustado a string o null
+  const {setUploading,setError}=UseUploadingState();
+  const [file, setFile] = useState<any | null>(null); // Tipo ajustado a string o null
   const mutation = useMutation({
     mutationFn: AddProduct,
     onSuccess: async (data) => {
@@ -38,7 +40,6 @@ const AddItemCategoryForm = () => {
   });
 
   const handlerAddProduct =(data:any)=>{
-    console.log("Soy la data ==>>", data)
     mutation.mutate(data)
   }
 
@@ -46,20 +47,16 @@ const AddItemCategoryForm = () => {
     <Formik
       initialValues={{ name: '', description: '', probability: 0, imageUrl: '' }}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting }) => {
         // Combinar los valores del formulario con la URL de la imagen
-        const formData = {
-          ...values,
-          imageUrl: file,
-        };
+        const imageUrl = await uploadFile(file, setFile, setUploading, setError);
         // Aquí puedes enviar formData a tu backend o manejarlo según tus necesidades
         setTimeout(() => {
-          alert(JSON.stringify(formData, null, 2));
           const addProductJson = {
             name: values.name,
             description: values.description,
             probability: values.probability,
-            imageURL: values.imageUrl,
+            imageURL: imageUrl,
             categoryId:`${pathname.split('/')[2]}`
           }
           handlerAddProduct(addProductJson)

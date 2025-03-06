@@ -1,6 +1,6 @@
 'use client';
 import AllCategories from '@/components/AllCategories/AllCategories';
-import Header from '@/components/Header/Header';
+import ProtectedRoute from '@/components/ProtectedRoute/protectedRoute';
 import AddCategoryButton from '@/ui/Buttons/AddCategoryButton';
 import { MainSpinner } from '@/ui/Loaders';
 import { Category, getCategories } from '@/utils/requests';
@@ -38,9 +38,8 @@ const CategoriesPage = () => {
   }
 
   return (
-    <>
-      <Header />
-      <div className="w-full flex justify-center items-center">
+    <ProtectedRoute>
+      <div className="w-full h-auto flex justify-center items-center">
         <div className="w-[80vw] h-full flex flex-col justify-between items-center">
           <h1 className="text-center text-[20px] mt-10 font-bold">Categorías</h1>
           <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -51,7 +50,7 @@ const CategoriesPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 

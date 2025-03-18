@@ -46,13 +46,12 @@ const ConfigItems = ({ show = true }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false); // Tipar el estado correctamente
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [cat, setCat] = useState<ConfigItemsInterface>();
-
   const [selectedCategory, setSelectedCategory] = useState<{
     text: string;
     id: string;
   }>({
     text: 'Sandwiches',
-    id: '',
+    id: "66eed96e692767a320051067",
   });
 
   // useQuery para obtener las categorías
@@ -67,11 +66,10 @@ const ConfigItems = ({ show = true }: Props) => {
   const {
     data: category,
     error,
-    // isLoading,
+    isLoading:loading,
   } = useQuery<Category[]>({
     queryKey: ['category', selectedCategory],
-    queryFn: () => getProductsCategories(selectedCategory!.id) as any,
-    enabled: !!selectedCategory,
+    queryFn: () => getProductsCategories(selectedCategory.id) as any,
   });
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
@@ -79,7 +77,6 @@ const ConfigItems = ({ show = true }: Props) => {
   const handleSelect = (id: string): void => {
     if (selectedProducts.includes(id)) {
       setSelectedProducts(selectedProducts.filter((p) => p !== id));
-      const newCat = { categoryId: id, products: selectedProducts };
     } else {
       setSelectedProducts([...selectedProducts, id]);
     }
@@ -88,6 +85,7 @@ const ConfigItems = ({ show = true }: Props) => {
     e.preventDefault();
     const element = e.currentTarget as HTMLElement;
     const idElement = element.getAttribute('data-key');
+
     handleSelect(idElement as string);
   };
   return (
@@ -164,7 +162,7 @@ const ConfigItems = ({ show = true }: Props) => {
               const filterConfig = mapLastConfig.filter(
                 (config: any) => config.categoryId !== selectedCategory.id
               );
-              console.log(filterConfig);
+              console.log(category);
               const data = {
                 categoriesSelected: [
                   ...filterConfig,

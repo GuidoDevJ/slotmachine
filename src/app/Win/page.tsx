@@ -7,7 +7,7 @@ const WinPage = () => {
     <div className="w-full h-[100vh] bg-win-bg bg-cover bg-center flex justify-center items-center">
         <div>
             <h1 className="text-6xl font-moul font-bold bg-custom-gradient bg-clip-text text-transparent">!FELICITACIONES!</h1>
-            <p className="text-center mt-4 text-white font-inter font-thin">Te ganaste 1 <span>{reward}</span></p>
+            <p className="text-center mt-4 text-white text-[20px] font-moul">Te ganaste <span className="font-bold">{reward.replace(/"/g, "")}</span></p>
         </div>
     </div>
   )

@@ -1,40 +1,55 @@
-// components/ProtectedRoute.tsx
-import { useAuthStore } from '@/stores/useAuthStore';
-import { jwtDecode } from 'jwt-decode';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
+"use client";
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const token = useAuthStore((state) => state.token);
+import { MainSpinner } from "@/ui/Loaders";
+import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    let token = localStorage.getItem('token');
-    console.log('token', token);
+    const token = localStorage.getItem("token");
+
     if (!token) {
-      router.push('/login'); // Redirigir al login si no está autenticado
-    } else {
-      const decoded = jwtDecode(token as string) as any;
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode<{ exp: number }>(token);
       const expirationTime = decoded.exp * 1000;
       const now = Date.now();
+
       if (now > expirationTime) {
-        console.log('No está autenticado');
-        router.push('/login'); // Redirigir al login si no está autenticado
+        router.push("/login");
+        return;
       }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error decoding token", error);
+      router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="w-[100vw] h-[100vh] flex justify-center items-center">
+        <MainSpinner />
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div className="min-w-[100vw]">
       <Header />
       {children}
       <Footer />
-    </>
+    </div>
   );
 };
 

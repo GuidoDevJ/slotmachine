@@ -22,7 +22,6 @@ export const getCategories = async (): Promise<Category[]> => {
     }
 
     const categories: Category[] = res.data; // No necesitas hacer res.data() en axios, solo res.data
-    console.log(categories);
     return categories;
   } catch (error) {
     console.error('Error al obtener las categorías:', error);
@@ -30,7 +29,7 @@ export const getCategories = async (): Promise<Category[]> => {
   }
 };
 export const getProductsCategories = async (
-  categoryId: string
+  categoryId: string | null
 ): Promise<any[]> => {
   const token = localStorage.getItem('token');
   try {

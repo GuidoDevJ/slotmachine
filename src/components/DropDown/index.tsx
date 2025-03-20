@@ -1,13 +1,16 @@
-'use client'
+'use client';
 import { useAuthStore } from '@/stores/useAuthStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
+const menuItems = [
+  { href: '/config', label: 'Inicio' },
+  { href: '/categories', label: 'Categorias' },
+];
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const logOut = useAuthStore((state) => state.logout); // Obtiene la función login de Zustand
-  const navigation = useRouter()
+  const navigation = useRouter();
 
   const goToLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Previene el comportamiento predeterminado
@@ -53,36 +56,28 @@ const DropDown = () => {
           aria-labelledby="menu-button"
         >
           <div className="py-1" role="none">
-            <Link
-              href="/config"
-              className="block px-4 py-2 text-sm text-gray-700"
-              role="menuitem"
-              tabIndex={0}
-              id="menu-item-0"
-            >
-              Inicio
-            </Link>
-            <Link
-              href="/categories"
-              className="block px-4 py-2 text-sm text-gray-700"
-              role="menuitem"
-              tabIndex={0}
-              id="menu-item-1"
-            >
-              Categorias
-            </Link>
-            <form method="POST" action="#" role="none">
-              <button
-                type="submit"
-                className="block w-full px-4 py-2 text-left text-sm text-gray-700"
+            {menuItems.map((item, index) => (
+              <Link
+                key={index}
+                href={item.href}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"
                 tabIndex={0}
-                id="menu-item-3"
-                onClick={goToLogin}
+                id={`menu-item-${index}`}
               >
-                Sign out
-              </button>
-            </form>
+                {item.label}
+              </Link>
+            ))}
+            <button
+              type="button"
+              className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+              tabIndex={0}
+              id="menu-item-logout"
+              onClick={goToLogin}
+            >
+              Sign out
+            </button>
           </div>
         </div>
       )}

@@ -1,8 +1,8 @@
 'use client';
 import Add from '@/../public/images/botton_add.svg';
 import { IProducts } from '@/app/api/models/Products';
-import Header from '@/components/Header/Header';
 import ProductsCard from '@/components/ProductCard/ProductsCard';
+import ProtectedRoute from '@/components/ProtectedRoute/protectedRoute';
 import { useSelectedCategory } from '@/stores/categories';
 import DeletePopUp from '@/ui/PopUp/delete';
 import { getProductsCategories } from '@/utils/requests';
@@ -35,8 +35,7 @@ const ProductsCategories = () => {
     router.push(`/categories/${pathname.split('/')[2]}/products/${id}`);
   };
   return (
-    <>
-      <Header />
+    <ProtectedRoute>
       <div className="w-full flex justify-center items-center">
         <div className="w-[60vw] h-full flex flex-col justify-between items-center">
           <h1 className="text-center text-[24px] font-bold mt-10 mb-10">{name}</h1>
@@ -76,7 +75,7 @@ const ProductsCategories = () => {
           )}
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 

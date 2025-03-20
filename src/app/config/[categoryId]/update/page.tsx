@@ -1,6 +1,6 @@
 'use client';
 import ConfigContainer from '@/components/ConfigElements/ConfigContainer';
-import Header from '@/components/Header/Header';
+import ProtectedRoute from '@/components/ProtectedRoute/protectedRoute';
 import Button from '@/ui/Buttons/ButtonText';
 import { PatchCategorySelected } from '@/utils/mutations';
 import {
@@ -98,8 +98,7 @@ const UpdateCategorySelected = () => {
   };
 
   return (
-    <>
-      <Header />
+    <ProtectedRoute>
       <div className="h-[100vh] flex justify-center items-center">
         <ConfigContainer>
           <h2 className="mb-4 font-normal text-gray-700 mt-10">Categorías</h2>
@@ -160,7 +159,7 @@ const UpdateCategorySelected = () => {
           ) : null}
         </ConfigContainer>
       </div>
-    </>
+    </ProtectedRoute>
   );
 };
 

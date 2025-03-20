@@ -160,11 +160,6 @@ const AddItemCategoryForm = () => {
                 {errors.imageUrl}
               </p>
             )}
-            {!errors.imageUrl && file && (
-              <p className="mt-2 text-sm text-green-600 dark:text-green-500">
-                <span className="font-medium">¡Listo!</span> La imagen ha sido subida.
-              </p>
-            )}
           </div>
 
           {/* Botón de Envío */}

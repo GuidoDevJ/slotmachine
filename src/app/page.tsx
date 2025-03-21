@@ -133,11 +133,12 @@ const SlotMachine: React.FC = () => {
 
   return (
     <div className="w-full h-[100vh] flex flex-col justify-evenly items-center bg-game-bg bg-cover bg-right md:bg-center">
-      <div className="w-auto h-[70vh] flex flex-col justify-between items-center bg-gradient-to-r from-[#2E86AB] to-[#344D49] rounded-2xl p-2">
+      <div className="max-w-[60vw] h-[70vh] flex flex-col justify-between items-center bg-gradient-to-r from-[#2E86AB] to-[#344D49] rounded-2xl p-2">
         <div
           className={`w-full h-full grid ${
             reels.length <= 9 ? 'grid-cols-3' : 'grid-cols-5'
           } gap-5`}
+          style={{ gridAutoRows: 'minmax(0, 1fr)' }} // Evita que los elementos crezcan más allá del contenedor
         >
           {reels.map((reel, index) => (
             <div
@@ -146,22 +147,19 @@ const SlotMachine: React.FC = () => {
               }}
               key={index}
               className="h-full border-2 border-black mx-1 flex justify-center items-center rounded-lg"
-              style={{
-                aspectRatio: '1', // Asegura que el div tenga una relación de aspecto cuadrada
-              }}
             >
               {reel.map((symbol, symbolIndex) => (
                 <div
                   key={symbolIndex}
-                  className="w-full h-full flex justify-center items-center"
+                  className="w-full h-full flex justify-center items-center overflow-hidden"
                 >
                   <Image
                     src={symbol?.imageURL}
                     alt={`Símbolo ${symbolIndex + 1}`}
-                    width={128} 
+                    width={329}
                     height={128}
-                    layout="intrinsic"
-                    className="object-cover w-full h-full"
+                    layout="responsive"
+                    className="object-fill w-full h-full"
                   />
                 </div>
               ))}

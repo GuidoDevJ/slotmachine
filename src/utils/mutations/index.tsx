@@ -186,13 +186,10 @@ export const registerUser = async(newUser:{email:string,password:string})=>{
     );
     return response.data;
   } catch (error: any) {
-    if (error) {
-      throw new Error(
-        error.response?.data?.message || "Error al registrar el usuario"
-      );
-    } else {
-      throw new Error("Error inesperado.");
-    }
+    throw new Error(
+      error.response?.data.error
+    );
+
   }
 }
 

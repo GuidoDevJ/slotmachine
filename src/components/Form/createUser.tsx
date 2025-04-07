@@ -17,8 +17,10 @@ const validationSchema = Yup.object().shape({
 type Props = {
   setShowSpinner: React.Dispatch<React.SetStateAction<boolean>>;
   setShowPopUp: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowError: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
-const CreateUserForm = ({setShowSpinner,setShowPopUp}:Props) => {
+const CreateUserForm = ({setShowSpinner,setShowPopUp,setShowError,setErrorMessage}:Props) => {
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: registerUser,
@@ -28,6 +30,15 @@ const CreateUserForm = ({setShowSpinner,setShowPopUp}:Props) => {
       setTimeout(() => {
         router.push('/config'); // Redirecciona después de crear el usuario
         setShowPopUp(false)
+      }, 1600);
+    },
+    onError: (e) => {
+      setShowSpinner(false);
+      setShowError(true)
+      setErrorMessage(e.message)
+      setTimeout(() => {
+        setShowError(false)
+        setErrorMessage('')
       }, 1600);
     },
   });

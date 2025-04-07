@@ -6,6 +6,7 @@ import { useState } from 'react';
 const menuItems = [
   { href: '/config', label: 'Inicio' },
   { href: '/categories', label: 'Categorias' },
+  { href: '/users/add', label: 'Usuarios' },
 ];
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);

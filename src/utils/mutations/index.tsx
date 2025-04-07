@@ -175,6 +175,26 @@ export const setIntervalWinner = async(interval:number)=>{
     }
   }
 }
+export const registerUser = async(newUser:{email:string,password:string})=>{
+  try {
+    const response = await instance.post(`/api/auth/register`, newUser,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error) {
+      throw new Error(
+        error.response?.data?.message || "Error al registrar el usuario"
+      );
+    } else {
+      throw new Error("Error inesperado.");
+    }
+  }
+}
 
 
 

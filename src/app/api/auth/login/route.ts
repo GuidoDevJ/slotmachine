@@ -5,6 +5,7 @@ import UserRepository from '@/app/api/repositories/userRepositories';
 import { createSecretKey } from 'crypto';
 import { SignJWT } from 'jose';
 import { NextResponse } from 'next/server';
+import { StatusUser } from '../../interfaces';
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
@@ -33,7 +34,10 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-
+  const status = user.status as StatusUser;
+  if (status === StatusUser.INACTIVE) {
+    return NextResponse.json({ error: 'Usuario inactivo' }, { status: 400 });
+  }
   // Convertir la clave secreta a un formato que jose entienda
   const secretKey = createSecretKey(Buffer.from(SECRET_KEY as string, 'utf-8'));
 
@@ -42,6 +46,5 @@ export async function POST(request: Request) {
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('1h')
     .sign(secretKey);
-
   return NextResponse.json({ message: 'Inicio de sesión exitoso', token });
 }

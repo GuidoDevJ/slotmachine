@@ -23,7 +23,7 @@ const Button = ({disabled=false,  size, children , color="primary", large="small
     <button
       onClick={onClick}
       type={type}
-      className={`${colors[color]} ${disabled} text-white rounded-[2px] ${sizes[size]} tracking-widest`}
+      className={`${colors[color]} ${disabled} text-white rounded-[2px] ${sizes[size]} tracking-widest rounded-sm`}
     >
       {children}
     </button>

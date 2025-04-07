@@ -175,6 +175,23 @@ export const setIntervalWinner = async(interval:number)=>{
     }
   }
 }
+export const registerUser = async(newUser:{email:string,password:string})=>{
+  try {
+    const response = await instance.post(`/api/auth/register`, newUser,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data.error
+    );
+
+  }
+}
 
 
 

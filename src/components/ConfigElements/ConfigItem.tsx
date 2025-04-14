@@ -41,6 +41,7 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
     enabled: !!selectedCategory,
   });
   const goTo=()=>{
+    console.log(categoryId)
     navigation.push(`/config/${categoryId}/update`)
   }
   const toggleDropdown = (): void => {

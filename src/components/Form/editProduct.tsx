@@ -26,6 +26,7 @@ const validationSchema = Yup.object().shape({
     .required('La descripción de la categoría es requerida'),
   probability: Yup.number()
     .min(0, 'La probabilidad debe ser al menos 0')
+    .max(100, 'La probabilidad no puede ser mayor que 100')
     .required('La probabilidad es requerida'),
   imageUrl: Yup.string()
     // .url('Debe ser una URL válida')
@@ -36,7 +37,6 @@ const EditProduct = ({ description, imageUrl, name, probability }: Props) => {
   const navigate = useRouter();
   const pathname = usePathname();
   const { setError, setUploading, error, uploading } = UseUploadingState();
-
   const [file, setFile] = useState<any | null>(null); // Tipo ajustado a string o null
   const mutation = useMutation({
     mutationFn: (data: any) => PatchProduct(data.product, data.id),
@@ -44,7 +44,6 @@ const EditProduct = ({ description, imageUrl, name, probability }: Props) => {
       navigate.push('/categories');
     },
   });
-
   const handlerAddProduct = (data: any) => {
     mutation.mutate(data);
   };

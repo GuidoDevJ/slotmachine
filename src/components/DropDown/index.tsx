@@ -16,7 +16,7 @@ const DropDown = () => {
   const goToLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Previene el comportamiento predeterminado
     logOut();
-    navigation.push('login');
+    navigation.push('/login');
   };
   const toggleMenu = () => {
     setIsOpen(!isOpen);

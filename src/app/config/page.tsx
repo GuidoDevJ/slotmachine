@@ -52,7 +52,7 @@ const ConfigPage = () => {
           <h2>Intervalo de ganadores</h2>
           <div className="ml-4 mt-4">
             <input
-              className="w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"
+              className="w-[80%] max-w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"
               value={inputValue}
               disabled={disabledInput}
               onChange={(e: any) => handleInputChange(e)}

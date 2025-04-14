@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('1h')
     .sign(secretKey);
-  const verificationLink = `${process.env.BASE_URL}/api/auth/verify?token=${token}`;
+  const verificationLink = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/auth/verify?token=${token}`;
   await sendEmail({
     to: new_user.email,
     subject: 'Bienvenido a la aplicacion de juegos',

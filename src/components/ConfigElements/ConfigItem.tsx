@@ -64,7 +64,7 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
     <ConfigContainer both={true} externalFnDelete={setShow} externalFn={goTo}>
       <h2 className="mb-4 font-normal text-gray-700 mt-10">Categorías</h2>
       <input
-        className="w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"
+        className="w-[80%] max-w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"
         value={inputValue}
         disabled={true}
       />
@@ -72,14 +72,14 @@ const ConfigItem = ({ name, categoryId, products }: CategorySelected) => {
       <span className="mt-2 font-extralight text-[10px] text-gray-400 block mb-10">
         *Selecciona una categoría para visualizar las imágenes
       </span>
-      <div className="w-full max-w-[950px] grid grid-cols-3 md:grid-cols-5 gap-4 justify-items-center mx-auto my-auto">
+      <div className="w-full max-w-[950px] grid grid-cols-1 md:grid-cols-5 gap-4 justify-items-center mx-auto my-auto">
         {products &&
           products.map((c: any) => (
             <div
               onClick={(e: any) => selectedProduct(e)}
               key={c._id}
               data-key={c._id}
-              className={`max-w-[150px] w-full h-[250px] flex flex-col border-solid border-[2px] rounded-lg border-red-600`}
+              className={`w-full min-w-[110px] md:max-w-[150px] h-[250px] flex flex-col border-solid border-[2px] rounded-lg border-red-600`}
             >
               <div className="w-full h-[65%] relative">
               <Image

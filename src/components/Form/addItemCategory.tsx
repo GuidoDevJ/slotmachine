@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
     .min(8, 'La descripción es demasiado corta')
     .required('La descripción de la categoría es requerida'),
   probability: Yup.number()
-    .max(1, 'La probabilidad debe ser como máximo 1')
+    .max(100, 'La probabilidad debe ser como máximo 1')
     .min(0, 'La probabilidad debe ser al menos 0')
     .required('La probabilidad es requerida'),
   imageUrl: Yup.string().required('La imagen es requerida'),

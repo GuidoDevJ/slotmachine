@@ -37,7 +37,7 @@ const ProductsCategories = () => {
   return (
     <ProtectedRoute>
       <div className="w-full flex justify-center items-center">
-        <div className="w-[60vw] h-full flex flex-col justify-between items-center">
+        <div className="w-[80vw] h-full flex flex-col justify-between items-center">
           <h1 className="text-center text-[24px] font-bold mt-10 mb-10">{name}</h1>
           <div className="w-full grid sm:grid-cols-4 xl:grid-cols-6 md:grid-cols-5 gap-4">
             {products.map((product: IProducts) => (

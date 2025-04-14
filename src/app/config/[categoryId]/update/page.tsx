@@ -10,7 +10,7 @@ import {
 } from '@/utils/requests';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const UpdateCategorySelected = () => {
@@ -24,12 +24,18 @@ const UpdateCategorySelected = () => {
     queryKey: [`category ${categoryId}`],
     queryFn: () => getSpecificConfig(categoryId as string), // Pass a function that calls getSpecificConfig
   });
-  console.log(selectProd?.categoryId?.name);
+  const pathname = usePathname();
+  const [url,setPathName] = useState("")
   const [allProducts, setAllProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>(
     selectProd?.categoryId?.name
   );
+  useEffect(() => {
+    const fullURL = window.location.href;
+    console.log('Pathname:', pathname);
+    console.log('Full URL:', fullURL);
+  }, [pathname]);
   const mutation = useMutation({
     mutationFn: (data: any) =>
       PatchCategorySelected(data, categoryId as string),
@@ -99,8 +105,8 @@ const UpdateCategorySelected = () => {
 
   return (
     <ProtectedRoute>
-      <div className="h-[100vh] flex justify-center items-center">
-        <ConfigContainer>
+      <div className="h-auto flex justify-center items-center">
+        <ConfigContainer showButtons={false}>
           <h2 className="mb-4 font-normal text-gray-700 mt-10">Categorías</h2>
           <input
             className="w-[200px] border-solid border-[2px] border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 rounded-md p-2"

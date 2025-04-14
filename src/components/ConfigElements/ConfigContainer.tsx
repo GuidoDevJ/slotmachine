@@ -26,11 +26,12 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
   const handleToggleEdit = () => {
     const newEditState = !edit;
     setEdit(newEditState);
-    externalFn?.(!edit);
+    externalFn?.(false);
   };
 
   const handleSave = () => {
     saveFn?.();
+    externalFn?.(true);
     setEdit(false);
   };
 

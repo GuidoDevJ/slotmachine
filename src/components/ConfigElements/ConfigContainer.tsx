@@ -39,7 +39,7 @@ const ConfigContainer: React.FC<ConfigContainerProps> = ({
   };
 
   return (
-    <div className="relative w-[70%] min-w-[480px] border border-[#D9D9D9] rounded-lg flex flex-col justify-center items-center mt-6 mb-6 p-4">
+    <div className="relative w-[70%] border border-[#D9D9D9] rounded-lg flex flex-col justify-center items-center mt-6 mb-6 p-4">
       <div className="w-full">
         {children && <div className="mt-4">{children}</div>}
 

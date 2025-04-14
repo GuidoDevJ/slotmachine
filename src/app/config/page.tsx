@@ -64,7 +64,7 @@ const ConfigPage = () => {
         </ConfigContainer>
         {
           config.categoriesSelected && config.categoriesSelected.map((config: any) => (
-            <ConfigItem categoryId={config.categoryId.id} key={config.id} name={config.categoryId.name} products={config.products} />
+            <ConfigItem categoryId={config.categoryId._id} key={config.id} name={config.categoryId.name} products={config.products} />
           ))
         }
         <div className="mx-auto my-auto p-6">

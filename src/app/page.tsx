@@ -48,7 +48,10 @@ const SlotMachine: React.FC = () => {
   const calculateReelCount = useCallback((): number => {
     return typeof window !== 'undefined' && window.innerWidth < 1280 ? 9 : 15;
   }, []);
-
+  const optimizeCloudinaryUrl = (url: string, width = 300): string => {
+    if (!url || !url.includes('cloudinary.com')) return 'url';
+    return url.replace('/upload/', `/upload/w_${width}/`);
+  };
   const initializeReels = useCallback(() => {
     const count = calculateReelCount();
     setReels(Array.from({ length: count }, () => [getRandomSymbol()]));
@@ -93,7 +96,6 @@ const SlotMachine: React.FC = () => {
 
         if (spinCount + 1 === spinsUntilWin) {
           const winningSymbol = getRandomSymbol();
-          console.log('winningSymbol', winningSymbol);
           setMiddleReels(winningSymbol);
           setResult(`¡Ganaste! Símbolo: ${winningSymbol.name}`);
           setReward(JSON.stringify(winningSymbol.name));
@@ -133,9 +135,9 @@ const SlotMachine: React.FC = () => {
 
   return (
     <div className="w-full h-[100vh] flex flex-col justify-evenly items-center bg-game-bg bg-cover bg-right md:bg-center">
-      <div className="max-w-[60vw] h-[70vh] flex flex-col justify-between items-center bg-gradient-to-r from-[#2E86AB] to-[#344D49] rounded-2xl p-2">
+      <div className="w-[60vw] h-[70vh] flex flex-col justify-between items-center bg-gradient-to-r from-[#2E86AB] to-[#344D49] rounded-2xl p-2">
         <div
-          className={`w-full h-full grid ${
+          className={`w-full h-full p-3 grid ${
             reels.length <= 9 ? 'grid-cols-3' : 'grid-cols-5'
           } gap-5`}
           style={{ gridAutoRows: 'minmax(0, 1fr)' }} // Evita que los elementos crezcan más allá del contenedor
@@ -146,21 +148,26 @@ const SlotMachine: React.FC = () => {
                 if (el) reelsRef.current[index] = el;
               }}
               key={index}
-              className="h-full border-2 border-black mx-1 flex justify-center items-center rounded-lg"
+              className="w-full h-full border-none mx-1 flex justify-center items-center"
             >
               {reel.map((symbol, symbolIndex) => (
                 <div
                   key={symbolIndex}
-                  className="w-full h-full flex justify-center items-center overflow-hidden"
+                  className="w-full h-full flex justify-center items-center overflow-hidden rounded-lg relative"
                 >
-                  <Image
-                    src={symbol?.imageURL}
-                    alt={`Símbolo ${symbolIndex + 1}`}
-                    width={329}
-                    height={128}
-                    layout="responsive"
-                    className="object-fill w-full h-full"
-                  />
+                  {symbol?.imageURL ? (
+                    <Image
+                      src={optimizeCloudinaryUrl(symbol.imageURL)}
+                      alt={`Símbolo ${symbolIndex + 1}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 20vw"
+                      className="object-fill w-full h-full"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-300 flex items-center justify-center text-xs text-gray-700">
+                      Sin imagen
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -14,7 +14,7 @@
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.0",
-    "formidable": "^3.5.1",
+    "formidable": "^3.5.4",
     "formik": "^2.4.6",
     "jose": "^5.9.2",
     "jsonwebtoken": "^9.0.2",

@@ -20,7 +20,6 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'game-bg': 'url("/images/background.jpg")',
-        'win-bg': 'url("/images/win.jpg")',
       },
       fontFamily: {
         inter: ['var(--font-inter)'],

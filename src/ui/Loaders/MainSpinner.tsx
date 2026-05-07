@@ -2,7 +2,7 @@ import React from 'react';
 
 export const MainSpinner = () => {
   return (
-    <div role="status">
+    <div role="status" aria-label="Cargando">
       <svg
         aria-hidden="true"
         className="w-20 h-20 text-white animate-spin dark:text-gray-600 fill-[#E03132]"
@@ -19,9 +19,31 @@ export const MainSpinner = () => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">Cargando...</span>
     </div>
   );
 };
+
+export const SkeletonCard = () => (
+  <div className="w-full h-[280px] rounded-xl bg-gray-200 animate-pulse flex flex-col">
+    <div className="w-full h-[60%] bg-gray-300 rounded-t-xl" />
+    <div className="p-3 flex flex-col gap-2">
+      <div className="h-4 bg-gray-300 rounded w-3/4" />
+      <div className="h-3 bg-gray-300 rounded w-1/2" />
+      <div className="h-3 bg-gray-300 rounded w-1/4" />
+    </div>
+  </div>
+);
+
+export const SkeletonCategoryCard = () => (
+  <div className="w-full h-[180px] rounded-lg bg-gray-700 animate-pulse" />
+);
+
+export const SkeletonRow = () => (
+  <div className="w-[70%] h-32 border border-[#D9D9D9] rounded-lg animate-pulse p-4 mt-6 mb-6">
+    <div className="h-4 bg-gray-300 rounded w-1/3 mb-4" />
+    <div className="h-3 bg-gray-300 rounded w-2/3" />
+  </div>
+);
 
 export default MainSpinner;

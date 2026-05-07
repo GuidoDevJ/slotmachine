@@ -1,30 +1,48 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-interface UserState {
+interface WinningSymbol {
+  imageURL: string;
+  value: number;
+  name: string;
+  _id?: string;
+}
+
+interface RewardState {
   reward: string;
+  winningSymbol: WinningSymbol | null;
+  redemptionCode: string;
   setReward: (reward: string) => void;
+  setWinningSymbol: (symbol: WinningSymbol) => void;
+  setRedemptionCode: (code: string) => void;
   reset: () => void;
 }
 
-// Crear la tienda persistente
-const useReward = create<UserState>()(
+const useReward = create<RewardState>()(
   persist(
     (set) => ({
       reward: '',
+      winningSymbol: null,
+      redemptionCode: '',
       setReward: (reward: string) => {
         set({ reward });
-        // Guardar en localStorage con persistencia automática
-        localStorage.setItem('reward', reward);
+      },
+      setWinningSymbol: (symbol: WinningSymbol) => {
+        set({
+          winningSymbol: symbol,
+          reward: symbol.name,
+        });
+      },
+      setRedemptionCode: (code: string) => {
+        set({ redemptionCode: code });
       },
       reset: () => {
-        set({ reward: '' });
-        localStorage.removeItem('reward');
+        set({ reward: '', winningSymbol: null, redemptionCode: '' });
       },
     }),
     {
-      name: 'user-state', // Nombre del almacenamiento
-      storage: createJSONStorage(() => localStorage), // Usar localStorage
+      name: 'user-state',
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

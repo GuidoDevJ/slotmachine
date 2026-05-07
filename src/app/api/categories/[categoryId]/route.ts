@@ -1,22 +1,26 @@
 import ProductsRepository from '@/app/api/repositories/products';
+import { extractIdFromUrl, safeError } from '@/app/api/utils/apiHelpers';
 import { NextResponse } from 'next/server';
 import db from '../../lib/db';
 
 export async function GET(req: Request) {
-  await db.connect();
-  // Obtener la URL completa
-  const url = req.url || '';
+  const { id: categoryID, error: idError } = extractIdFromUrl(req.url);
+  if (idError) return idError;
 
-  // Extraer el ID de la URL
-  const segments = url.split('/'); // Dividir la URL por '/'
-  const categoryID = segments.pop(); // Tomar el último segmento como ID
   try {
-    // Llamar al método para actualizar el producto
+    await db.connect();
+  } catch (error) {
+    console.error('[API Error] DB connection failed:', error);
+    return safeError('Error de conexion a la base de datos', 500);
+  }
+
+  try {
     const updatedProduct = await ProductsRepository.getAllByCategoryId(
       categoryID as string
     );
     return NextResponse.json(updatedProduct, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ message: `${error.message}` }, { status: 500 });
+  } catch (error) {
+    console.error('[API Error] GET /api/categories/[categoryId]:', error);
+    return safeError('Error al obtener los productos de la categoria', 500);
   }
 }

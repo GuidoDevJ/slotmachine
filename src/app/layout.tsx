@@ -1,6 +1,7 @@
 import ReactQueryProvider from '@/utils/reactQueryProvider';
 import type { Metadata } from 'next';
 import { Inter, Moul } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 const inter = Inter({
@@ -15,12 +16,20 @@ const moul = Moul({
   display: 'swap',
 });
 
-// Static metadata
 export const metadata: Metadata = {
-  title: 'Casino Mocana',
-  description: "Page's games of Casino Mocana",
+  title: {
+    default: 'Casino Mocana',
+    template: '%s | Casino Mocana',
+  },
+  description: 'Gira los carretes y gana premios increibles en Casino Mocana. Tu tragamonedas online favorito.',
   icons: {
-    icon: '/Logo.svg', // Make sure this path is correct
+    icon: '/Logo.svg',
+  },
+  keywords: ['casino', 'tragamonedas', 'slot machine', 'premios', 'juego'],
+  openGraph: {
+    title: 'Casino Mocana',
+    description: 'Gira los carretes y gana premios increibles',
+    type: 'website',
   },
 };
 
@@ -30,10 +39,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.variable}>
+    <html lang="es">
+      <body className={`${inter.variable} ${moul.variable}`}>
         <ReactQueryProvider>
-          <main className='overflow-hidden'>{children}</main>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#1a1a2e',
+                color: '#fff',
+                border: '1px solid rgba(255,255,255,0.1)',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#10B981',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: '#EF4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+          <main className="overflow-hidden">{children}</main>
         </ReactQueryProvider>
       </body>
     </html>

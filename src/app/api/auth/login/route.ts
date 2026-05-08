@@ -1,7 +1,6 @@
-// app/api/login/route.ts
-
 import db from '@/app/api/lib/db';
 import UserRepository from '@/app/api/repositories/userRepositories';
+import { parseBody, safeError } from '@/app/api/utils/apiHelpers';
 import { createSecretKey } from 'crypto';
 import { SignJWT } from 'jose';
 import { NextResponse } from 'next/server';
@@ -10,41 +9,55 @@ import { StatusUser } from '../../interfaces';
 const SECRET_KEY = process.env.JWT_SECRET;
 
 export async function POST(request: Request) {
-  await db.connect(); // Singleton connection
+  try {
+    await db.connect();
 
-  const { email, password } = await request.json();
+    const { data: body, error: parseError } = await parseBody(request);
+    if (parseError) return parseError;
 
-  // Buscar al usuario en la base de datos
-  const user = await UserRepository.findUserByEmail(email);
-  if (!user) {
-    return NextResponse.json(
-      { error: 'Usuario no encontrado' },
-      { status: 404 }
+    const { email, password } = body;
+
+    if (!email || !password) {
+      return safeError('Email y contraseña son requeridos', 400);
+    }
+
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return safeError('Formato de datos invalido', 400);
+    }
+
+    const user = await UserRepository.findUserByEmail(email);
+    if (!user) {
+      return safeError('Credenciales invalidas', 401);
+    }
+
+    const is_password_correct = await UserRepository.comparePassword(
+      password,
+      user.password
     );
-  }
+    if (!is_password_correct) {
+      return safeError('Credenciales invalidas', 401);
+    }
 
-  // Verificar la contraseña
-  const is_password_correct = await UserRepository.comparePassword(
-    password,
-    user.password
-  );
-  if (!is_password_correct) {
-    return NextResponse.json(
-      { error: 'Contraseña incorrecta' },
-      { status: 400 }
-    );
-  }
-  const status = user.status as StatusUser;
-  if (status === StatusUser.INACTIVE) {
-    return NextResponse.json({ error: 'Usuario inactivo' }, { status: 400 });
-  }
-  // Convertir la clave secreta a un formato que jose entienda
-  const secretKey = createSecretKey(Buffer.from(SECRET_KEY as string, 'utf-8'));
+    const status = user.status as StatusUser;
+    if (status === StatusUser.INACTIVE) {
+      return safeError('Usuario inactivo. Verifica tu email para activar la cuenta', 403);
+    }
 
-  // Generar el token JWT usando jose
-  const token = await new SignJWT({ email: user.email })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('1h')
-    .sign(secretKey);
-  return NextResponse.json({ message: 'Inicio de sesión exitoso', token });
+    if (!SECRET_KEY) {
+      console.error('JWT_SECRET no esta configurado');
+      return safeError('Error de configuracion del servidor', 500);
+    }
+
+    const secretKey = createSecretKey(Buffer.from(SECRET_KEY, 'utf-8'));
+
+    const token = await new SignJWT({ email: user.email })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('1h')
+      .sign(secretKey);
+
+    return NextResponse.json({ message: 'Inicio de sesion exitoso', token });
+  } catch (error) {
+    console.error('[API] POST /api/auth/login:', error);
+    return safeError('Error interno del servidor', 500);
+  }
 }

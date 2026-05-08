@@ -12,10 +12,15 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async ({ to, subject, html }: ISendEmail) => {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to,
-    subject,
-    html,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      html,
+    });
+  } catch (error) {
+    console.error('[Email Error] Failed to send email:', error);
+    throw new Error('Error al enviar el correo electronico');
+  }
 };

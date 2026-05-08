@@ -1,8 +1,6 @@
 import { JWTPayload, jwtVerify } from 'jose';
 import { NextResponse } from 'next/server';
 
-const SECRET_KEY = process.env.JWT_SECRET as string;
-
 interface Req extends Request {
   user: JWTPayload;
 }
@@ -22,6 +20,19 @@ export async function middleware(request: Req) {
     return NextResponse.next();
   }
 
+  // Permitir POST a /api/redemption sin auth (jugadores creando codigos al ganar)
+  if (pathname === '/api/redemption' && request.method === 'POST') {
+    return NextResponse.next();
+  }
+
+  if (!process.env.JWT_SECRET) {
+    console.error('[Middleware Error] JWT_SECRET is not configured');
+    return NextResponse.json(
+      { error: 'Configuracion del servidor incompleta' },
+      { status: 500 }
+    );
+  }
+
   const token = request.headers.get('Authorization')?.split(' ')[1]; // Obtener el token del encabezado Authorization
   if (!token) {
     return NextResponse.json(
@@ -34,18 +45,14 @@ export async function middleware(request: Req) {
     // Verificar el token utilizando `jose`
     const { payload } = await jwtVerify(
       token,
-      new TextEncoder().encode(SECRET_KEY)
+      new TextEncoder().encode(process.env.JWT_SECRET)
     );
-
-    // Almacenar los datos decodificados en la solicitud
-    // request.user = payload as any;
-    console.log(payload);
 
     return NextResponse.next();
   } catch (error) {
     return NextResponse.json(
-      { error: 'Token inválido o expirado' },
-      { status: 403 }
+      { error: 'Token invalido o expirado' },
+      { status: 401 }
     );
   }
 }
